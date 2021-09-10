@@ -5,7 +5,8 @@ import tkinter as tk
 class MenuBar(tk.Menu):
     def __init__(self, master = None):
         super(MenuBar, self).__init__(master)
-        
+        self.option_add('*tearOff', False)
+
         filemenu = FileMenu(self)
         self.add_cascade(label="File", menu = filemenu)
         
@@ -25,7 +26,7 @@ class MenuBar(tk.Menu):
 
 class FileMenu(tk.Menu):
     def __init__(self, master):
-        super(FileMenu, self).__init__(master, tearoff = False)
+        super(FileMenu, self).__init__(master)
         
         self.add_command(label="New", command = master.donothing)
         self.add_command(label="Open", command = master.donothing)
@@ -37,7 +38,7 @@ class FileMenu(tk.Menu):
  
 class EditMenu(tk.Menu):
     def __init__(self, master):
-        super(EditMenu, self).__init__(master, tearoff = False)
+        super(EditMenu, self).__init__(master)
         
         self.add_command(label="Undo", command = master.donothing)
         self.add_command(label="Redo", command = master.donothing)
@@ -50,7 +51,7 @@ class EditMenu(tk.Menu):
 
 class HelpMenu(tk.Menu):
     def __init__(self, master):
-        super(HelpMenu, self).__init__(master, tearoff = False)
+        super(HelpMenu, self).__init__(master)
         
         self.add_command(label="Help Index", command = master.donothing)
         self.add_command(label="About...", command = master.donothing)
@@ -60,6 +61,7 @@ class App(tk.Tk):
         super(App, self).__init__(master)
         
         menubar = MenuBar(self)
+
         self.config(menu = menubar)
 
 if __name__ == "__main__":

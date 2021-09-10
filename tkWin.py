@@ -51,17 +51,27 @@ class EditMenu(tk.Menu):
 
 class HelpMenu(tk.Menu):
     def __init__(self, master):
-        super(HelpMenu, self).__init__(master)
+        super(HelpMenu, self).__init__(master, name='help')
         
         self.add_command(label="Help Index", command = master.donothing)
-        self.add_command(label="About...", command = master.donothing)
+        self.add_command(label="About...", command = self.about)
+
+    def about(self):
+        win=tk.Toplevel(self.master)
+        win.title('about')
+        box = tk.Frame(win)
+        box.pack()
+        label = tk.Label(box, text='TkLifeSearch\n\nFrank Everdij (2021)', padx=10, pady=10)
+        label.pack()
+        button = tk.Button(box, text='Ok', command = win.destroy)
+        button.pack(side='bottom')
 
 class App(tk.Tk):
     def __init__(self, master = None):
         super(App, self).__init__(master)
         
         menubar = MenuBar(self)
-
+        self.title('TkLife')
         self.config(menu = menubar)
 
 if __name__ == "__main__":

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import tkinter as tk
+from cellboard import *
 
 class MenuBar(tk.Menu):
     def __init__(self, master = None):
@@ -73,7 +74,9 @@ class App(tk.Tk):
         menubar = MenuBar(self)
         self.title('TkLife')
         self.config(menu = menubar)
-
+        board = CellBoard(self)
+        board.pack()
+        
 if __name__ == "__main__":
     app = App()
     app.mainloop()

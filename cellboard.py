@@ -21,8 +21,8 @@ class CellBoard(tk.Frame):
         for i,row in enumerate(self.field):
             for j,column in enumerate(row):
                 self.field[i][j].set('   ')
-                self.L = tk.Label(self, textvariable=self.field[i][j], bg=self.statecolor[self.state[i][j]], width=3, height=1)
-                self.L.grid(row=i,column=j)
+                self.L = tk.Label(self, textvariable=self.field[i][j], relief=tk.RAISED, bg=self.statecolor[self.state[i][j]], width=3, height=1)
+                self.L.grid(row=i,column=j, ipadx=4, ipady=5)
                 self.L.bind('<Button-1>',lambda e,i=i,j=j: self.on_leftclick(i,j,e))
                 self.L.bind('<Button-2>',lambda e,i=i,j=j: self.on_middleclick(i,j,e))
                 self.L.bind('<Button-3>',lambda e,i=i,j=j: self.on_rightclick(i,j,e))

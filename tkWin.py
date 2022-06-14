@@ -10,12 +10,13 @@ class App(tk.Tk):
         super(App, self).__init__(master)
         
         menubar = MenuBar(self)
+        board = CellBoard(self)
+        slider = GenSlider(self)
+
         self.title('TkLife')
         self.config(menu = menubar)
-        board = CellBoard(self)
-        board.grid(row=0, column=0, sticky=tk.NW)
-        slider = GenSlider(self)
-        slider.grid(row=1, column=0, sticky=tk.NW)
+        slider.pack(side=tk.BOTTOM, fill=tk.X)
+        board.pack(side=tk.TOP, fill=tk.BOTH, expand=tk.YES)
         
 if __name__ == "__main__":
     app = App()

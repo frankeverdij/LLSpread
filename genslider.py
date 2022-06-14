@@ -2,7 +2,7 @@ import tkinter as tk
 
 class GenSlider(tk.Frame):
     def __init__(self, master):
-        super(GenSlider, self).__init__(master)
+        super(GenSlider, self).__init__(master, relief=tk.RIDGE, bd=1)
         self.generation = tk.IntVar(0)
         
         self.G = tk.Label(self, text='Generation: ')

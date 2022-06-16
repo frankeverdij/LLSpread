@@ -4,14 +4,17 @@ import tkinter as tk
   0 and 1 for Life's normal states, 2 and 3 for cells which disregard rules,
   4 and 5 for unknown cells without and with labels.
 """
+fieldcolor = [ 'white', 'black', 'white', 'black', 'black', 'black' ]
+fieldvalue = {"0": 0 , "1": 1, "0'": 2, "1'": 3, "*": 4, " ": 5}
+statecolor = [ 'black', 'white', 'black', 'white', 'grey', 'lightgrey' ]
 
 class CellBoard(tk.Frame):
-    def __init__(self, master):
+    def __init__(self, master, r=10, c=10):
         super(CellBoard, self).__init__(master)
-        self.field = [ [tk.StringVar() for _ in range(10) ] for _ in range(10) ]
-        self.fieldcolor = [ 'white', 'black', 'white', 'black', 'black', 'black' ]
-        self.state = [ [4]*10 for _ in range(10) ]
-        self.statecolor = [ 'black', 'white', 'black', 'white', 'grey', 'lightgrey' ]
+        self.row = r
+        self.column = c
+        self.field = [ [tk.StringVar() for _ in range(self.column) ] for _ in range(self.row) ]
+        self.state = [ [4] * self.column for _ in range(self.row) ]
         self.i_saved = -1
         self.j_saved = -1
 
@@ -21,11 +24,27 @@ class CellBoard(tk.Frame):
         for i,row in enumerate(self.field):
             for j,column in enumerate(row):
                 self.field[i][j].set('   ')
-                self.L = tk.Label(self, textvariable=self.field[i][j], relief=tk.RAISED, bg=self.statecolor[self.state[i][j]], width=3, height=1)
+                self.L = tk.Label(self, textvariable=self.field[i][j], relief=tk.RAISED, bg=statecolor[self.state[i][j]], width=3, height=1)
                 self.L.grid(row=i,column=j, ipadx=4, ipady=5)
                 self.L.bind('<Button-1>',lambda e,i=i,j=j: self.on_leftclick(i,j,e))
                 self.L.bind('<Button-2>',lambda e,i=i,j=j: self.on_middleclick(i,j,e))
                 self.L.bind('<Button-3>',lambda e,i=i,j=j: self.on_rightclick(i,j,e))
+
+    def load_sheet(self, sheet):
+        pass
+
+    def save_sheet(self, sheet):
+        pass
+
+    def resize_board(r, c):
+        if (row == 0):
+            if (column == 0):
+                return
+        for label in self.grid_slaves():
+            if int(label.grid_info()["row"]) > r:
+                label.grid_forget()
+            if int(label.grid_info()["column"]) > c:
+                label.grid_forget()
 
     def on_leftclick(self,i,j,event):
         cellstate = self.state[i][j]
@@ -41,7 +60,7 @@ class CellBoard(tk.Frame):
             self.field[i][j].set(' # ')
         else:
             self.field[i][j].set('   ')
-        event.widget.config(bg=self.statecolor[cellstate], fg=self.fieldcolor[cellstate])
+        event.widget.config(bg=statecolor[cellstate], fg=fieldcolor[cellstate])
         self.state[i][j] = cellstate
 
     def on_middleclick(self,i,j,event):
@@ -56,7 +75,7 @@ class CellBoard(tk.Frame):
             else:
                 self.i_saved = -1
         self.state[i][j] = 5
-        event.widget.config(bg=self.statecolor[self.state[i][j]], fg=self.fieldcolor[self.state[i][j]])
+        event.widget.config(bg=statecolor[self.state[i][j]], fg=fieldcolor[self.state[i][j]])
 
     def on_rightclick(self,i,j,event):
         if (self.state[i][j] == 4):
@@ -65,7 +84,7 @@ class CellBoard(tk.Frame):
 
         self.state[i][j] = 4
         self.field[i][j].set('   ')
-        event.widget.config(bg=self.statecolor[self.state[i][j]], fg=self.fieldcolor[self.state[i][j]])
+        event.widget.config(bg=statecolor[self.state[i][j]], fg=fieldcolor[self.state[i][j]])
 
     def on_keyhandler(self,event):
         if (self.i_saved < 0):

@@ -45,8 +45,7 @@ class CellBoard(tk.Frame):
         self.state[i][j] = cellstate
 
     def on_middleclick(self,i,j,event):
-        current_state = self.state[i][j]
-        if (current_state < 5):
+        if (self.state[i][j] < 5):
             self.field[i][j].set('   ')
             self.i_saved = i
             self.j_saved = j
@@ -60,6 +59,10 @@ class CellBoard(tk.Frame):
         event.widget.config(bg=self.statecolor[self.state[i][j]], fg=self.fieldcolor[self.state[i][j]])
 
     def on_rightclick(self,i,j,event):
+        if (self.state[i][j] == 4):
+            self.on_middleclick(i,j,event)
+            return
+
         self.state[i][j] = 4
         self.field[i][j].set('   ')
         event.widget.config(bg=self.statecolor[self.state[i][j]], fg=self.fieldcolor[self.state[i][j]])

@@ -8,11 +8,11 @@ from genslider import *
 class App(tk.Tk):
     def __init__(self, master = None):
         super(App, self).__init__(master)
-        self.period = 1
+        self.period = 3
         self.generation = 0
         menubar = MenuBar(self)
         board = CellBoard(self)
-        slider = GenSlider(self, self.period)
+        slider = GenSlider(self)
 
         self.title('TkLife')
         self.config(menu = menubar)

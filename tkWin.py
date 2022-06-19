@@ -8,16 +8,22 @@ from genslider import *
 class App(tk.Tk):
     def __init__(self, master = None):
         super(App, self).__init__(master)
-        
+        self.period = 1
+        self.generation = 0
         menubar = MenuBar(self)
         board = CellBoard(self)
-        slider = GenSlider(self)
+        slider = GenSlider(self, self.period)
 
         self.title('TkLife')
         self.config(menu = menubar)
         slider.pack(side=tk.BOTTOM, fill=tk.X)
         board.pack(side=tk.TOP, fill=tk.BOTH, expand=tk.YES)
         
+    def generationSet(self, genchoice):
+        self.generation = genchoice
+        print("Chosen genration is", self.generation)
+        # board.generationSet(self.generation)
+
 if __name__ == "__main__":
     app = App()
     app.mainloop()

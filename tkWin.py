@@ -21,8 +21,13 @@ class App(tk.Tk):
         
     def generationSet(self, genchoice):
         self.generation = genchoice
-        print("Chosen genration is", self.generation)
+        print("Chosen generation is", self.generation)
         # board.generationSet(self.generation)
+
+    def periodSet(self, periodchoice):
+        self.period = periodchoice
+        print("Chosen period is", self.period)
+        # slider.periodSet(self.period)
 
 if __name__ == "__main__":
     app = App()

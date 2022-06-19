@@ -14,6 +14,8 @@ class GenSlider(tk.Frame):
         self.S.grid(row=0, column=2)
 
     def updateGeneration(self,generation):
-       print(generation)
        self.master.generationSet(generation)
 
+    def periodSet(self,period):
+        self.period = period
+        self.S.config(to=period)

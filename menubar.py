@@ -19,6 +19,30 @@ class MenuBar(tk.Menu):
         button = tk.Button(filewin, text="Do nothing button")
         button.pack()
         
+    def setDimensions(self):
+        dimwin = tk.Toplevel(self.master)
+        dimwin.title('Dimensions')
+        parambox = tk.Frame(dimwin)
+        parambox.pack()
+
+        labelcolumn = tk.Label(parambox, text="Column:")
+        labelrow = tk.Label(parambox, text="Row:")
+        labelperiod = tk.Label(parambox, text="Period:")
+        spincolumn = tk.Spinbox(parambox, from_=0, to=10)
+        spinrow = tk.Spinbox(parambox, from_=0, to=10)
+        spinperiod = tk.Spinbox(parambox, textvariable=self.master.period, from_=0, to=10)
+
+        button = tk.Button(parambox, text='Ok', command = dimwin.destroy)
+
+        labelcolumn.grid(row=0, column=0)
+        labelrow.grid(row=1, column=0)
+        labelperiod.grid(row=2, column=0)
+        spincolumn.grid(row=0, column=1)
+        spinrow.grid(row=1, column=1)
+        spinperiod.grid(row=2, column=1)
+
+        button.grid(row=3, column=0, columnspan=2)
+
     def quit(self):
         self.master.quit()
 
@@ -46,6 +70,8 @@ class EditMenu(tk.Menu):
         self.add_command(label="Paste", command = master.donothing)
         self.add_command(label="Delete", command = master.donothing)
         self.add_command(label="Select All", command = master.donothing)
+        self.add_separator()
+        self.add_command(label="Set Dimensions", command = master.setDimensions)
 
 class HelpMenu(tk.Menu):
     def __init__(self, master):

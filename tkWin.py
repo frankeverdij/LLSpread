@@ -15,17 +15,17 @@ class App(tk.Tk):
 
         menubar = MenuBar(self)
         board = CellBoard(self)
-        slider = GenSlider(self)
+        self.slider = GenSlider(self)
         board.new([10,10])
 
         self.title('TkLife')
         self.config(menu = menubar)
-        slider.pack(side=tk.BOTTOM, fill=tk.X)
+        self.slider.pack(side=tk.BOTTOM, fill=tk.X)
         board.pack(side=tk.TOP, fill=tk.BOTH, expand=tk.YES)
         
     def update_period(self, var, index, mode):
-        print("Chosen period is", self.period.get())
-        # slider.periodSet(self.period)
+#        print("Chosen period is", self.period.get())
+        self.slider.periodSet()
 
     def update_generation(self, var, index, mode):
         print("Chosen generation is", self.generation.get())

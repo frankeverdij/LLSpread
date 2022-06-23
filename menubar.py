@@ -30,7 +30,7 @@ class MenuBar(tk.Menu):
         labelperiod = tk.Label(parambox, text="Period:")
         spincolumn = tk.Spinbox(parambox, from_=0, to=10)
         spinrow = tk.Spinbox(parambox, from_=0, to=10)
-        spinperiod = tk.Spinbox(parambox, textvariable=self.master.period, from_=0, to=10)
+        spinperiod = tk.Spinbox(parambox, textvariable=self.master.period, from_=1, to=10)
 
         button = tk.Button(parambox, text='Ok', command = dimwin.destroy)
 

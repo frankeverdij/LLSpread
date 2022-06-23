@@ -13,6 +13,7 @@ class App(tk.Tk):
         menubar = MenuBar(self)
         board = CellBoard(self)
         slider = GenSlider(self)
+        board.new([10,10])
 
         self.title('TkLife')
         self.config(menu = menubar)

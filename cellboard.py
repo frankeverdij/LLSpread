@@ -40,14 +40,15 @@ class CellBoard(tk.Frame):
     def save_sheet(self, sheet):
         pass
 
-    def resize_board(r, c):
-        if (row == 0):
-            if (column == 0):
-                return
+    def resize_board(self, paramlist):
+        difrow = paramlist[0] - self.row
+        difcolumn = paramlist[1] - self.column
+        if (difrow == 0) and (difcolumn == 0):
+            return
         for label in self.grid_slaves():
-            if int(label.grid_info()["row"]) > r:
+            if int(label.grid_info()["row"]) > paramlist[0]:
                 label.grid_forget()
-            if int(label.grid_info()["column"]) > c:
+            if int(label.grid_info()["column"]) > paramlist[1]:
                 label.grid_forget()
 
     def on_leftclick(self,i,j,event):

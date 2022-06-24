@@ -4,6 +4,7 @@ import tkinter as tk
 from menubar import *
 from cellboard import *
 from genslider import *
+from spreadsheet import *
 
 class App(tk.Tk):
     def __init__(self, master = None):
@@ -17,12 +18,13 @@ class App(tk.Tk):
         board = CellBoard(self)
         self.slider = GenSlider(self)
         board.new([10,10])
+        spread = Spread(self)
 
         self.title('TkLife')
         self.config(menu = menubar)
         self.slider.pack(side=tk.BOTTOM, fill=tk.X)
         board.pack(side=tk.TOP, fill=tk.BOTH, expand=tk.YES)
-        
+
     def update_period(self, var, index, mode):
 #        print("Chosen period is", self.period.get())
         self.slider.periodSet()

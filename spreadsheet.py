@@ -6,13 +6,13 @@ class Spread(tk.Frame):
         self.row = r
         self.column = c
         self.period = p
-        self.sheet = [ [ [tk.StringVar('*') for _ in range(self.column) ] for _ in range(self.row) ] for _ in range(self.period + 1) ]
-        
+        self.sheet = [ [ [tk.StringVar(master, '*') for _ in range(self.column) ] for _ in range(self.row) ] for _ in range(self.period + 1) ]
+
     def get(self, p):
         return self.sheet[p]
 
-    def set(self, sheet, p)):
-        if (self.row == len(sheet)) and (self.column == len(sheet[0]))
+    def set(self, sheet, p):
+        if (self.row == len(sheet)) and (self.column == len(sheet[0])):
             self.sheet[p] = sheet
         else:
             raise('Setting sheet: size mismatch!')

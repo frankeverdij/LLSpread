@@ -34,6 +34,9 @@ class CellBoard(tk.Frame):
                 self.L.bind('<Button-2>',lambda e,i=i,j=j: self.on_middleclick(i,j,e))
                 self.L.bind('<Button-3>',lambda e,i=i,j=j: self.on_rightclick(i,j,e))
 
+    def idx(self,label):
+        return fieldvalue.get(label, 5)
+
     def load_sheet(self, sheet):
         pass
 

@@ -7,6 +7,17 @@ class Spread(tk.Frame):
         self.column = c
         self.period = p
         self.sheet = [ [ [tk.StringVar(master, '*') for _ in range(self.column) ] for _ in range(self.row) ] for _ in range(self.period + 1) ]
+        for i in range(p):
+            for j in range(r):
+                for k in range(c):
+                    self.sheet[i][j][k].trace_add('write', self.push_stack)
+
+    def push_stack(self, var, index, mode):
+        for i in range(self.row):
+            sheetrow=[]
+            for j in range(self.column):
+                sheetrow.append( self.sheet[self.master.generation.get()][i][j].get() )
+            print(sheetrow)
 
     def get(self, p):
         return self.sheet[p]

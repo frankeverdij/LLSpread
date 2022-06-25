@@ -1,8 +1,8 @@
 import tkinter as tk
 
-class GenSlider(tk.Frame):
+class Footer(tk.Frame):
     def __init__(self, master):
-        super(GenSlider, self).__init__(master, relief=tk.RIDGE, bd=1)
+        super(Footer, self).__init__(master, relief=tk.RIDGE, bd=1)
         
         self.G = tk.Label(self, text='Generation: ')
         self.G.grid(row=0, column=0, ipadx=4, ipady=5, sticky=tk.E)
@@ -15,4 +15,4 @@ class GenSlider(tk.Frame):
         try:
             self.S.config(to=self.master.period.get())
         except:
-            print("GenSlider: Empty period")
+            print("Footer: Empty period")

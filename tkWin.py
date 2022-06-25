@@ -3,7 +3,7 @@
 import tkinter as tk
 from menubar import *
 from board import *
-from genslider import *
+from footer import *
 from spreadsheet import *
 
 class App(tk.Tk):
@@ -16,17 +16,17 @@ class App(tk.Tk):
 
         menubar = MenuBar(self)
         self.board = Board(self,[10,10])
-        self.slider = GenSlider(self)
+        self.footer = Footer(self)
         self.spread = Spread(self,[10,10])
 
         self.title('TkLife')
         self.config(menu = menubar)
-        self.slider.pack(side=tk.BOTTOM, fill=tk.X)
+        self.footer.pack(side=tk.BOTTOM, fill=tk.X)
         self.board.pack(side=tk.TOP, fill=tk.BOTH, expand=tk.YES)
 
     def update_period(self, var, index, mode):
         print("Chosen period is", self.period.get())
-        self.slider.periodSet()
+        self.footer.periodSet()
 
     def update_generation(self, var, index, mode):
         print("Chosen generation is", self.generation.get())

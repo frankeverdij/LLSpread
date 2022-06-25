@@ -9,7 +9,7 @@ class Spread(tk.Frame):
         self.period = master.period.get()
 
         self.sheet = [ [ [tk.StringVar(self.master, '*') for _ in range(self.column) ] for _ in range(self.row) ] for _ in range(self.period + 1) ]
-        for i in range(self.period):
+        for i in range(self.period + 1):
             for j in range(self.row):
                 for k in range(self.column):
                     self.sheet[i][j][k].trace_add('write', self.push_stack)

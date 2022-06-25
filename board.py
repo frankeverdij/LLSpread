@@ -10,9 +10,9 @@ cell2val = {"0": 0 , "1": 1, "0'": 2, "1'": 3, "*": 4, " ": 5}
 fieldvalue = [ key for (key, val) in cell2val.items() ]
 cell2field = { "0": '   ', "1": '   ', "0'": ' # ', "1'": ' # ', "*": '   ' }
 
-class CellBoard(tk.Frame):
+class Board(tk.Frame):
     def __init__(self, master, paramlist):
-        super(CellBoard, self).__init__(master)
+        super(Board, self).__init__(master)
 
         self.row = paramlist[0]
         self.column = paramlist[1]

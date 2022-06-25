@@ -2,7 +2,7 @@
 
 import tkinter as tk
 from menubar import *
-from cellboard import *
+from board import *
 from genslider import *
 from spreadsheet import *
 
@@ -15,7 +15,7 @@ class App(tk.Tk):
         self.generation.trace_add('write', self.update_generation)
 
         menubar = MenuBar(self)
-        self.board = CellBoard(self,[10,10])
+        self.board = Board(self,[10,10])
         self.slider = GenSlider(self)
         self.spread = Spread(self,[10,10])
 

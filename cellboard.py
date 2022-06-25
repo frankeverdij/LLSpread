@@ -4,11 +4,11 @@ import tkinter as tk
   0 and 1 for Life's normal states, 2 and 3 for cells which disregard rules,
   4 and 5 for unknown cells without and with labels.
 """
-fieldcolor = [ 'white', 'black', 'white', 'black', 'black', 'black' ]
-fieldvalue = {"0": 0 , "1": 1, "0'": 2, "1'": 3, "*": 4, " ": 5}
-fieldchar = [ "0", "1", "0'", "1'", "*" ]
-statecolor = [ 'black', 'white', 'black', 'white', 'grey', 'lightgrey' ]
-statevalue = { "0": '   ', "1": '   ', "0'": ' # ', "1'": ' # ', "*": '   ' }
+fgfield = [ 'white', 'black', 'white', 'black', 'black', 'black' ]
+bgfield = [ 'black', 'white', 'black', 'white', 'grey', 'lightgrey' ]
+cell2val = {"0": 0 , "1": 1, "0'": 2, "1'": 3, "*": 4, " ": 5}
+fieldvalue = [ key for (key, val) in cell2val.items() ]
+cell2field = { "0": '   ', "1": '   ', "0'": ' # ', "1'": ' # ', "*": '   ' }
 
 class CellBoard(tk.Frame):
     def __init__(self, master, paramlist):
@@ -27,27 +27,27 @@ class CellBoard(tk.Frame):
         for i,row in enumerate(self.field):
             for j,column in enumerate(row):
                 self.field[i][j].set('   ')
-                self.L = tk.Label(self, textvariable=self.field[i][j], relief=tk.RAISED, bg=statecolor[4], width=3, height=1)
-                self.L.grid(row=i,column=j, ipadx=4, ipady=5)
-                self.L.bind('<Button-1>',lambda e,i=i,j=j: self.on_leftclick(i,j,e))
-                self.L.bind('<Button-2>',lambda e,i=i,j=j: self.on_middleclick(i,j,e))
-                self.L.bind('<Button-3>',lambda e,i=i,j=j: self.on_rightclick(i,j,e))
+                self.L = tk.Label(self, textvariable=self.field[i][j], relief=tk.RAISED, fg=fgfield[4], bg=bgfield[4], width=3, height=1)
+                self.L.grid(row=i, column=j, ipadx=4, ipady=5)
+                self.L.bind('<Button-1>',lambda e,i=i,j=j: self.on_leftclick(i, j, e))
+                self.L.bind('<Button-2>',lambda e,i=i,j=j: self.on_middleclick(i, j, e))
+                self.L.bind('<Button-3>',lambda e,i=i,j=j: self.on_rightclick(i, j, e))
 
     def get_value(self, label):
-        return fieldvalue.get(label, 5)
+        return cell2val.get(label, 5)
 
-    def get_label(self, field):
-        return statevalue.get(field, field)
+    def get_field(self, field):
+        return cell2field.get(field, field)
 
     def refresh(self):
         self.generation = self.master.generation.get()
         for label in self.grid_slaves():
             r = int(label.grid_info()["row"])
             c = int(label.grid_info()["column"])
-            cell = self.master.spread.sheet[self.generation][r][c].get()
-            k = self.get_value(cell)
-            self.field[r][c].set(self.get_label(cell))
-            label.config(bg=statecolor[k], fg=fieldcolor[k], relief=tk.RAISED)
+            fstate = self.master.spread.sheet[self.generation][r][c].get()
+            val = self.get_value(fstate)
+            self.field[r][c].set(self.get_field(fstate))
+            label.config(bg=bgfield[val], fg=fgfield[val], relief=tk.RAISED)
         self.i_saved = -1
 
     def resize_board(self, paramlist):
@@ -61,30 +61,30 @@ class CellBoard(tk.Frame):
             if int(label.grid_info()["column"]) > paramlist[1]:
                 label.grid_forget()
 
-    def on_leftclick(self,i,j,event):
-        cellstate = self.get_value(self.master.spread.sheet[self.generation][i][j].get())
-        if (cellstate < 5):
-            if cellstate == 4:
-                cellstate = 0
+    def on_leftclick(self, i, j, event):
+        val = self.get_value(self.master.spread.sheet[self.generation][i][j].get())
+        if (val < 5):
+            if val == 4:
+                val = 0
             else: 
-                cellstate += 1
-                cellstate = cellstate % 4
+                val += 1
+                val = val % 4
         else:
             return
 
-        self.field[i][j].set(' # ' if (cellstate == 2 or cellstate == 3) else '   ')
-        event.widget.config(bg=statecolor[cellstate], fg=fieldcolor[cellstate])
-        self.master.spread.sheet[self.generation][i][j].set(fieldchar[cellstate])
+        self.field[i][j].set(' # ' if (val == 2 or val == 3) else '   ')
+        event.widget.config(bg=bgfield[val], fg=fgfield[val])
+        self.master.spread.sheet[self.generation][i][j].set(fieldvalue[val])
 
     def widget_raise(self):
         for label in self.grid_slaves():
             label.config(relief=tk.RAISED)
 
-    def on_middleclick(self,i,j,event):
+    def on_middleclick(self, i, j, event):
         self.widget_raise()
-        event.widget.config(bg=statecolor[5], fg=fieldcolor[5])
-        cellstate = self.get_value(self.master.spread.sheet[self.generation][i][j].get())
-        if (cellstate < 5):
+        event.widget.config(bg=bgfield[5], fg=fgfield[5])
+        val = self.get_value(self.master.spread.sheet[self.generation][i][j].get())
+        if (val < 5):
             self.field[i][j].set('   ')
             self.master.spread.sheet[self.generation][i][j].set('   ')
             self.i_saved = i
@@ -98,25 +98,27 @@ class CellBoard(tk.Frame):
             else:
                 self.i_saved = -1
 
-    def on_rightclick(self,i,j,event):
-        if (self.master.spread.sheet[self.generation][i][j].get() == '*'):
+    def on_rightclick(self, i, j, event):
+        val = self.get_value(self.master.spread.sheet[self.generation][i][j].get())
+        if (val == 4):
             self.i_saved = -1
-            self.on_middleclick(i,j,event)
+            self.on_middleclick(i, j, event)
             return
 
-        self.master.spread.sheet[self.generation][i][j].set('*')
+        val = 4
+        self.master.spread.sheet[self.generation][i][j].set(fieldvalue[val])
         self.field[i][j].set('   ')
-        event.widget.config(bg=statecolor[4], fg=fieldcolor[4], relief=tk.RAISED)
+        event.widget.config(bg=bgfield[val], fg=fgfield[val], relief=tk.RAISED)
 
-    def on_keyhandler(self,event):
+    def on_keyhandler(self, event):
         if (self.i_saved < 0):
             return
 
         i = self.i_saved
         j = self.j_saved
-        cellstate = self.get_value(self.master.spread.sheet[self.generation][i][j].get())
-        if (cellstate == 5):
-            var = self.field[i][j].get()
+        var = self.master.spread.sheet[self.generation][i][j].get()
+        val = self.get_value(var)
+        if (val == 5):
             if (event.keysym == 'Escape'):
                 self.i_saved = -1
                 self.widget_raise()
@@ -139,6 +141,6 @@ class CellBoard(tk.Frame):
                         var = var[0:2] + event.char
                     else:
                         var = var[0] + event.char + ' '
-            self.field[i][j].set(var)
             self.master.spread.sheet[self.generation][i][j].set(var)
+            self.field[i][j].set(var)
 

@@ -18,7 +18,7 @@ class App(tk.Tk):
         board = CellBoard(self)
         self.slider = GenSlider(self)
         board.new([10,10])
-        spread = Spread(self)
+        self.spread = Spread(self)
 
         self.title('TkLife')
         self.config(menu = menubar)

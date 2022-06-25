@@ -15,23 +15,22 @@ class App(tk.Tk):
         self.generation.trace_add('write', self.update_generation)
 
         menubar = MenuBar(self)
-        board = CellBoard(self)
+        self.board = CellBoard(self,[10,10])
         self.slider = GenSlider(self)
-        board.new([10,10])
-        self.spread = Spread(self)
+        self.spread = Spread(self,[10,10])
 
         self.title('TkLife')
         self.config(menu = menubar)
         self.slider.pack(side=tk.BOTTOM, fill=tk.X)
-        board.pack(side=tk.TOP, fill=tk.BOTH, expand=tk.YES)
+        self.board.pack(side=tk.TOP, fill=tk.BOTH, expand=tk.YES)
 
     def update_period(self, var, index, mode):
-#        print("Chosen period is", self.period.get())
+        print("Chosen period is", self.period.get())
         self.slider.periodSet()
 
     def update_generation(self, var, index, mode):
         print("Chosen generation is", self.generation.get())
-        # board.generationSet(self.generation)
+        self.board.refresh()
 
 if __name__ == "__main__":
     app = App()

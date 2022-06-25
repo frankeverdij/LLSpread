@@ -8,16 +8,15 @@ fieldcolor = [ 'white', 'black', 'white', 'black', 'black', 'black' ]
 fieldvalue = {"0": 0 , "1": 1, "0'": 2, "1'": 3, "*": 4, " ": 5}
 fieldchar = [ "0", "1", "0'", "1'", "*" ]
 statecolor = [ 'black', 'white', 'black', 'white', 'grey', 'lightgrey' ]
+statevalue = { "0": '   ', "1": '   ', "0'": ' # ', "1'": ' # ', "*": '   ' }
 
 class CellBoard(tk.Frame):
-    def __init__(self, master, paramlist = None):
+    def __init__(self, master, paramlist):
         super(CellBoard, self).__init__(master)
-        if (paramlist):
-            self.new(paramlist)
 
-    def new(self, paramlist):
         self.row = paramlist[0]
         self.column = paramlist[1]
+        self.generation = master.generation.get()
         self.field = [ [tk.StringVar() for _ in range(self.column) ] for _ in range(self.row) ]
         self.i_saved = -1
         self.j_saved = -1
@@ -34,14 +33,22 @@ class CellBoard(tk.Frame):
                 self.L.bind('<Button-2>',lambda e,i=i,j=j: self.on_middleclick(i,j,e))
                 self.L.bind('<Button-3>',lambda e,i=i,j=j: self.on_rightclick(i,j,e))
 
-    def idx(self,label):
+    def get_value(self, label):
         return fieldvalue.get(label, 5)
 
-    def load_sheet(self, sheet):
-        pass
+    def get_label(self, field):
+        return statevalue.get(field, field)
 
-    def save_sheet(self, sheet):
-        pass
+    def refresh(self):
+        self.generation = self.master.generation.get()
+        for label in self.grid_slaves():
+            r = int(label.grid_info()["row"])
+            c = int(label.grid_info()["column"])
+            cell = self.master.spread.sheet[self.generation][r][c].get()
+            k = self.get_value(cell)
+            self.field[r][c].set(self.get_label(cell))
+            label.config(bg=statecolor[k], fg=fieldcolor[k], relief=tk.RAISED)
+        self.i_saved = -1
 
     def resize_board(self, paramlist):
         difrow = paramlist[0] - self.row
@@ -55,7 +62,7 @@ class CellBoard(tk.Frame):
                 label.grid_forget()
 
     def on_leftclick(self,i,j,event):
-        cellstate = self.idx(self.master.spread.sheet[0][i][j].get())
+        cellstate = self.get_value(self.master.spread.sheet[self.generation][i][j].get())
         if (cellstate < 5):
             if cellstate == 4:
                 cellstate = 0
@@ -64,12 +71,10 @@ class CellBoard(tk.Frame):
                 cellstate = cellstate % 4
         else:
             return
-        if (cellstate == 2 or cellstate == 3):
-            self.field[i][j].set(' # ')
-        else:
-            self.field[i][j].set('   ')
+
+        self.field[i][j].set(' # ' if (cellstate == 2 or cellstate == 3) else '   ')
         event.widget.config(bg=statecolor[cellstate], fg=fieldcolor[cellstate])
-        self.master.spread.sheet[0][i][j].set(fieldchar[cellstate])
+        self.master.spread.sheet[self.generation][i][j].set(fieldchar[cellstate])
 
     def widget_raise(self):
         for label in self.grid_slaves():
@@ -78,10 +83,10 @@ class CellBoard(tk.Frame):
     def on_middleclick(self,i,j,event):
         self.widget_raise()
         event.widget.config(bg=statecolor[5], fg=fieldcolor[5])
-        cellstate = self.idx(self.master.spread.sheet[0][i][j].get())
+        cellstate = self.get_value(self.master.spread.sheet[self.generation][i][j].get())
         if (cellstate < 5):
             self.field[i][j].set('   ')
-            self.master.spread.sheet[0][i][j].set('   ')
+            self.master.spread.sheet[self.generation][i][j].set('   ')
             self.i_saved = i
             self.j_saved = j
             event.widget.config(relief=tk.RIDGE)
@@ -94,12 +99,12 @@ class CellBoard(tk.Frame):
                 self.i_saved = -1
 
     def on_rightclick(self,i,j,event):
-        if (self.master.spread.sheet[0][i][j].get() == '*'):
+        if (self.master.spread.sheet[self.generation][i][j].get() == '*'):
             self.i_saved = -1
             self.on_middleclick(i,j,event)
             return
 
-        self.master.spread.sheet[0][i][j].set('*')
+        self.master.spread.sheet[self.generation][i][j].set('*')
         self.field[i][j].set('   ')
         event.widget.config(bg=statecolor[4], fg=fieldcolor[4], relief=tk.RAISED)
 
@@ -109,7 +114,7 @@ class CellBoard(tk.Frame):
 
         i = self.i_saved
         j = self.j_saved
-        cellstate = self.idx(self.master.spread.sheet[0][i][j].get())
+        cellstate = self.get_value(self.master.spread.sheet[self.generation][i][j].get())
         if (cellstate == 5):
             var = self.field[i][j].get()
             if (event.keysym == 'Escape'):
@@ -135,5 +140,5 @@ class CellBoard(tk.Frame):
                     else:
                         var = var[0] + event.char + ' '
             self.field[i][j].set(var)
-            self.master.spread.sheet[0][i][j].set(var)
+            self.master.spread.sheet[self.generation][i][j].set(var)
 

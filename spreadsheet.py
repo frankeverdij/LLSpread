@@ -1,15 +1,17 @@
 import tkinter as tk
 
 class Spread(tk.Frame):
-    def __init__(self, master, r=10, c=10, p=1):
+    def __init__(self, master, paramlist):
         super(Spread, self).__init__(master)
-        self.row = r
-        self.column = c
-        self.period = p
-        self.sheet = [ [ [tk.StringVar(master, '*') for _ in range(self.column) ] for _ in range(self.row) ] for _ in range(self.period + 1) ]
-        for i in range(p):
-            for j in range(r):
-                for k in range(c):
+
+        self.row = paramlist[0]
+        self.column = paramlist[1]
+        self.period = master.period.get()
+
+        self.sheet = [ [ [tk.StringVar(self.master, '*') for _ in range(self.column) ] for _ in range(self.row) ] for _ in range(self.period + 1) ]
+        for i in range(self.period):
+            for j in range(self.row):
+                for k in range(self.column):
                     self.sheet[i][j][k].trace_add('write', self.push_stack)
 
     def push_stack(self, var, index, mode):

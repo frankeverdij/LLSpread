@@ -1,4 +1,8 @@
+import os
 import tkinter as tk
+from tkinter import filedialog as fd
+
+from tkinter.messagebox import showinfo
 
 class MenuBar(tk.Menu):
     def __init__(self, master = None):
@@ -51,13 +55,32 @@ class FileMenu(tk.Menu):
         super(FileMenu, self).__init__(master)
         
         self.add_command(label="New", command = master.donothing)
-        self.add_command(label="Open", command = master.donothing)
+        self.add_command(label="Open", command = self.open_file)
         self.add_command(label="Save", command = master.donothing)
-        self.add_command(label="Save as...", command = master.donothing)
+        self.add_command(label="Save as...", command = self.save_file)
         self.add_command(label="Close", command = master.donothing)
         self.add_separator()
         self.add_command(label="Exit", command = master.quit)
- 
+
+    def open_file(self):
+        filetypes = ( ('text files', '*.txt'), ('All files', '*.*') )
+
+        filename = fd.askopenfilename(
+            title='Open a file',
+            initialdir=os.curdir,
+            filetypes=filetypes)
+
+        showinfo(title='Selected File', message=filename)
+
+    def save_file(self):
+        filetypes = ( ('text files', '*.txt'), ('All files', '*.*') )
+
+        filename = fd.asksaveasfile(
+            initialfile = 'Untitled.txt',
+            initialdir=os.curdir,
+            defaultextension=".txt",
+            filetypes=filetypes)
+
 class EditMenu(tk.Menu):
     def __init__(self, master):
         super(EditMenu, self).__init__(master)

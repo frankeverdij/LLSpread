@@ -11,27 +11,38 @@ fieldvalue = [ key for (key, val) in cell2val.items() ]
 cell2field = { "0": '   ', "1": '   ', "0'": ' # ', "1'": ' # ', "*": '   ' }
 
 class Board(tk.Frame):
-    def __init__(self, master, paramlist):
+    def __init__(self, master):
         super(Board, self).__init__(master)
 
-        self.row = paramlist[0]
-        self.column = paramlist[1]
-        self.generation = master.generation.get()
-        self.field = [ [tk.StringVar() for _ in range(self.column) ] for _ in range(self.row) ]
+    def create(self):
+        row = self.master.row.get()
+        column = self.master.column.get()
+        if (row == 0) or (column == 0):
+            raise "Board.new called with zero dimension(s)"
+        self.generation = self.master.generation.get()
+        self.field = [ [tk.StringVar(self,'   ') for _ in range(column) ] for _ in range(row) ]
+        self.labels = [ [] for _ in range(row) ]
         self.i_saved = -1
         self.j_saved = -1
 
         self.focus_set()
         self.bind('<Key>', lambda e: self.on_keyhandler(e))
 
-        for i,row in enumerate(self.field):
-            for j,column in enumerate(row):
-                self.field[i][j].set('   ')
-                self.L = tk.Label(self, textvariable=self.field[i][j], relief=tk.RAISED, fg=fgfield[4], bg=bgfield[4], width=3, height=1)
-                self.L.grid(row=i, column=j, ipadx=4, ipady=5)
-                self.L.bind('<Button-1>',lambda e,i=i,j=j: self.on_leftclick(i, j, e))
-                self.L.bind('<Button-2>',lambda e,i=i,j=j: self.on_middleclick(i, j, e))
-                self.L.bind('<Button-3>',lambda e,i=i,j=j: self.on_rightclick(i, j, e))
+        for i,row_ in enumerate(self.field):
+            for j,column_ in enumerate(row_):
+                L = self.tile(i, j)
+                self.labels[i].append(L)
+
+    def tile(self, i, j):
+        L = tk.Label(self, textvariable=self.field[i][j], relief=tk.RAISED, fg=fgfield[4], bg=bgfield[4], width=3, height=1)
+        L.grid(row=i, column=j, ipadx=4, ipady=5)
+        L.bind('<Button-1>',lambda e,i=i,j=j: self.on_leftclick(i, j, e))
+        L.bind('<Button-2>',lambda e,i=i,j=j: self.on_middleclick(i, j, e))
+        L.bind('<Button-3>',lambda e,i=i,j=j: self.on_rightclick(i, j, e))
+        return L
+
+    def destroy(self):
+        self.destroy()
 
     def get_value(self, label):
         return cell2val.get(label, 5)
@@ -50,9 +61,12 @@ class Board(tk.Frame):
             label.config(bg=bgfield[val], fg=fgfield[val], relief=tk.RAISED)
         self.i_saved = -1
 
-    def resize_board(self, paramlist):
-        difrow = paramlist[0] - self.row
-        difcolumn = paramlist[1] - self.column
+    def resize(self):
+        newcolumn = master.column.get()
+        difcolumn = newcolumn - len(self.master.spread.sheet[0][0])
+
+        newrow = master.row.get()
+        difrow = newrow - len(self.master.spread.sheet[0])
         if (difrow == 0) and (difcolumn == 0):
             return
         for label in self.grid_slaves():
@@ -81,7 +95,7 @@ class Board(tk.Frame):
             label.config(relief=tk.RAISED)
 
     def on_middleclick(self, i, j, event):
-        self.widget_raise()
+        self.labels[self.i_saved][self.j_saved].config(relief=tk.RAISED)
         event.widget.config(bg=bgfield[5], fg=fgfield[5])
         val = self.get_value(self.master.spread.sheet[self.generation][i][j].get())
         if (val < 5):
@@ -101,7 +115,6 @@ class Board(tk.Frame):
     def on_rightclick(self, i, j, event):
         val = self.get_value(self.master.spread.sheet[self.generation][i][j].get())
         if (val == 4):
-            self.i_saved = -1
             self.on_middleclick(i, j, event)
             return
 
@@ -120,8 +133,8 @@ class Board(tk.Frame):
         val = self.get_value(var)
         if (val == 5):
             if (event.keysym == 'Escape'):
+                self.labels[self.i_saved][self.j_saved].config(relief=tk.RAISED)
                 self.i_saved = -1
-                self.widget_raise()
                 return
 
             if (event.char == '-'):

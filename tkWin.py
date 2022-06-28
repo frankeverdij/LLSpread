@@ -9,17 +9,19 @@ from spreadsheet import *
 class App(tk.Tk):
     def __init__(self, master = None):
         super(App,self).__init__(master)
-        self.row = tk.IntVar(master,1)
-        self.column = tk.IntVar(master,1)
+        self.row = tk.IntVar(master,10)
+        self.column = tk.IntVar(master,10)
         self.period = tk.IntVar(master,1)
         self.generation = tk.IntVar(master,0)
         self.generation.trace_add('write', self.update_generation)
 
         menubar = MenuBar(self)
-        self.board = Board(self,[self.column.get(), self.row.get()])
+        self.board = Board(self)
         self.footer = Footer(self)
-        self.spread = Spread(self,[self.column.get(), self.row.get()])
+        self.spread = Spread(self)
 
+        self.spread.create()
+        self.board.create()
         self.title('TkLife')
         self.config(menu = menubar)
         self.footer.pack(side=tk.BOTTOM, fill=tk.X)

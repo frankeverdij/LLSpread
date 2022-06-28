@@ -29,6 +29,8 @@ class App(tk.Tk):
 
     def update_dimensions(self):
         print("Chose dimensions are", self.column.get(), self.row.get())
+        self.spread.resize()
+        self.board.resize()
 
     def update_period(self):
         print("Chosen period is", self.period.get())

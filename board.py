@@ -41,9 +41,6 @@ class Board(tk.Frame):
         L.bind('<Button-3>',lambda e,i=i,j=j: self.on_rightclick(i, j, e))
         return L
 
-    def destroy(self):
-        self.destroy()
-
     def get_value(self, label):
         return cell2val.get(label, 5)
 
@@ -62,18 +59,17 @@ class Board(tk.Frame):
         self.i_saved = -1
 
     def resize(self):
-        newcolumn = master.column.get()
-        difcolumn = newcolumn - len(self.master.spread.sheet[0][0])
+        newcolumn = self.master.column.get()
+        difcolumn = newcolumn - len(self.field[0])
+        if (difcolumn < 0):
+            self.labels[:][newcolumn: newcolumn - difcolumn].destroy()
+        else:
+            for i in range(len(self.field)):
+                for j in range(newcolumn - difcolumn, newcolumn):
+                    self.field[i].append(tk.StringVar(self,'   '))
+                    L = self.tile(i, j)
+                    self.labels[i].append(L)
 
-        newrow = master.row.get()
-        difrow = newrow - len(self.master.spread.sheet[0])
-        if (difrow == 0) and (difcolumn == 0):
-            return
-        for label in self.grid_slaves():
-            if int(label.grid_info()["row"]) > paramlist[0]:
-                label.grid_forget()
-            if int(label.grid_info()["column"]) > paramlist[1]:
-                label.grid_forget()
 
     def on_leftclick(self, i, j, event):
         val = self.get_value(self.master.spread.sheet[self.generation][i][j].get())

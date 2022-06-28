@@ -24,19 +24,19 @@ class MenuBar(tk.Menu):
         button.pack()
         
     def setDimensions(self):
-        dimwin = tk.Toplevel(self.master)
-        dimwin.title('Dimensions')
-        parambox = tk.Frame(dimwin)
+        self.dimwin = tk.Toplevel(self.master)
+        self.dimwin.title('Dimensions')
+        parambox = tk.Frame(self.dimwin)
         parambox.pack()
 
         labelcolumn = tk.Label(parambox, text="Column:")
         labelrow = tk.Label(parambox, text="Row:")
         labelperiod = tk.Label(parambox, text="Period:")
-        spincolumn = tk.Spinbox(parambox, from_=0, to=10)
-        spinrow = tk.Spinbox(parambox, from_=0, to=10)
-        spinperiod = tk.Spinbox(parambox, textvariable=self.master.period, from_=1, to=10)
+        spincolumn = tk.Spinbox(parambox, textvariable=self.master.column, from_=1, to=64)
+        spinrow = tk.Spinbox(parambox, textvariable=self.master.row, from_=1, to=64)
+        spinperiod = tk.Spinbox(parambox, textvariable=self.master.period, from_=1, to=16)
 
-        button = tk.Button(parambox, text='Ok', command = dimwin.destroy)
+        button = tk.Button(parambox, text='Ok', command=self.dimensions_destroy)
 
         labelcolumn.grid(row=0, column=0)
         labelrow.grid(row=1, column=0)
@@ -46,6 +46,11 @@ class MenuBar(tk.Menu):
         spinperiod.grid(row=2, column=1)
 
         button.grid(row=3, column=0, columnspan=2)
+
+    def dimensions_destroy(self):
+        self.master.update_dimensions()
+        self.master.update_period()
+        self.dimwin.destroy()
 
     def quit(self):
         self.master.quit()

@@ -14,6 +14,7 @@ class App(tk.Tk):
         self.period = tk.IntVar(master,1)
         self.generation = tk.IntVar(master,0)
         self.generation.trace_add('write', self.update_generation)
+        self.wintitle = tk.StringVar(self,'TkLLS')
 
         menubar = MenuBar(self)
         self.board = Board(self)
@@ -22,13 +23,13 @@ class App(tk.Tk):
 
         self.spread.create()
         self.board.create()
-        self.title('TkLife')
+        self.title(self.wintitle.get())
         self.config(menu = menubar)
         self.footer.pack(side=tk.BOTTOM, fill=tk.X)
         self.board.pack(side=tk.TOP, fill=tk.BOTH, expand=tk.YES)
 
     def update_dimensions(self):
-        print("Chose dimensions are", self.column.get(), self.row.get())
+        print("Chosen dimensions are", self.column.get(), self.row.get())
         self.spread.resize()
         self.board.resize()
 

@@ -23,7 +23,7 @@ class MenuBar(tk.Menu):
         button = tk.Button(filewin, text="Do nothing button")
         button.pack()
         
-    def setDimensions(self):
+    def set_dimensions(self):
         self.dimwin = tk.Toplevel(self.master)
         self.dimwin.title('Dimensions')
         parambox = tk.Frame(self.dimwin)
@@ -59,9 +59,9 @@ class FileMenu(tk.Menu):
     def __init__(self, master):
         super(FileMenu, self).__init__(master)
         
-        self.add_command(label="New", command = master.donothing)
+        self.add_command(label="New", command = master.set_dimensions)
         self.add_command(label="Open", command = self.open_file)
-        self.add_command(label="Save", command = master.donothing)
+        self.add_command(label="Save", command = self.save_now)
         self.add_command(label="Save as...", command = self.save_file)
         self.add_command(label="Close", command = master.donothing)
         self.add_separator()
@@ -76,6 +76,7 @@ class FileMenu(tk.Menu):
             filetypes=filetypes)
 
         showinfo(title='Selected File', message=filename)
+        self.master.wintitle.set(filename)
 
     def save_file(self):
         filetypes = ( ('text files', '*.txt'), ('All files', '*.*') )
@@ -85,6 +86,10 @@ class FileMenu(tk.Menu):
             initialdir=os.curdir,
             defaultextension=".txt",
             filetypes=filetypes)
+        self.master.wintitle.set(filename)
+
+    def save_now(self):
+        pass
 
 class EditMenu(tk.Menu):
     def __init__(self, master):
@@ -99,7 +104,7 @@ class EditMenu(tk.Menu):
         self.add_command(label="Delete", command = master.donothing)
         self.add_command(label="Select All", command = master.donothing)
         self.add_separator()
-        self.add_command(label="Set Dimensions", command = master.setDimensions)
+        self.add_command(label="Set Dimensions", command = master.set_dimensions)
 
 class HelpMenu(tk.Menu):
     def __init__(self, master):

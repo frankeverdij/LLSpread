@@ -34,12 +34,14 @@ class Spread(tk.Frame):
             raise('Setting sheet: size mismatch!')
             
     def resize(self):
-        newcolumn = self.master.column.get()
-        difcolumn = newcolumn - len(self.sheet[0][0])
-        if (difcolumn > 0):
-            for i in range(self.period + 1):
-                for j in range(len(self.sheet[0])):
-                    for k in range(newcolumn - difcolumn, newcolumn):
-                        self.sheet[i][j].append(tk.StringVar(self.master,'*'))
-                        self.sheet[i][j][k].trace_add('write', self.push_stack)
-
+        sheet = [ [ [tk.StringVar(self.master, '*') for _ in range(self.master.column.get()) ] for _ in range(self.master.row.get()) ] for _ in range(self.master.period.get() + 1) ]
+        for i in range(len(sheet)):
+            for j in range(len(sheet[0])):
+                for k in range(len(sheet[0][0])):
+                    sheet[i][j][k].trace_add('write', self.push_stack)
+                    try:
+                        sheet[i][j][k] = self.sheet[i][j][k]
+                    except:
+                        pass
+        self.sheet = sheet
+        self.period = self.master.period.get()

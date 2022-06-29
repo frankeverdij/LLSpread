@@ -36,10 +36,12 @@ class App(tk.Tk):
     def update_period(self):
         print("Chosen period is", self.period.get())
         self.footer.periodSet()
+        self.spread.resize()
 
     def update_generation(self, var, index, mode):
         print("Chosen generation is", self.generation.get())
         self.board.refresh()
+
 
 
 if __name__ == "__main__":

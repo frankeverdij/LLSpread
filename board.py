@@ -59,13 +59,36 @@ class Board(tk.Frame):
         self.i_saved = -1
 
     def resize(self):
-        newcolumn = self.master.column.get()
-        difcolumn = newcolumn - len(self.field[0])
-        if (difcolumn < 0):
-            self.labels[:][newcolumn: newcolumn - difcolumn].destroy()
+        oldrows = len(self.field)
+        oldcolumns = len(self.field[0])
+        newcolumns = self.master.column.get()
+        if (newcolumns < oldcolumns):
+            for i in range(oldrows):
+                for j in range(oldcolumns, newcolumns, -1):
+                    self.field[i].pop()
+                    self.labels[i][j - 1].destroy()
+                    self.labels[i].pop()
         else:
-            for i in range(len(self.field)):
-                for j in range(newcolumn - difcolumn, newcolumn):
+            for i in range(oldrows):
+                for j in range(oldcolumns, newcolumns):
+                    self.field[i].append(tk.StringVar(self,'   '))
+                    L = self.tile(i, j)
+                    self.labels[i].append(L)
+
+        oldrows = len(self.field)
+        oldcolumns = len(self.field[0])
+        newrows = self.master.row.get()
+        if (newrows < oldrows):
+            for i in range(oldrows, newrows, -1):
+                for j in range(oldcolumns):
+                    self.labels[i - 1][j].destroy()
+                self.labels.pop()
+                self.field.pop()
+        else:
+            for i in range(oldrows, newrows):
+                self.labels.append([])
+                self.field.append([])
+                for j in range(oldcolumns):
                     self.field[i].append(tk.StringVar(self,'   '))
                     L = self.tile(i, j)
                     self.labels[i].append(L)

@@ -23,6 +23,9 @@ class MenuBar(tk.Menu):
         button = tk.Button(filewin, text="Do nothing button")
         button.pack()
         
+    def load_file(self, filename):
+        self.master.load_file(filename)
+
     def set_dimensions(self):
         self.dimwin = tk.Toplevel(self.master)
         self.dimwin.title('Dimensions')
@@ -49,7 +52,6 @@ class MenuBar(tk.Menu):
 
     def dimensions_destroy(self):
         self.master.update_dimensions()
-        self.master.update_period()
         self.dimwin.destroy()
 
     def quit(self):
@@ -74,9 +76,8 @@ class FileMenu(tk.Menu):
             title='Open a file',
             initialdir=os.curdir,
             filetypes=filetypes)
+        self.master.load_file(filename)
 
-        showinfo(title='Selected File', message=filename)
-        self.master.wintitle.set(filename)
 
     def save_file(self):
         filetypes = ( ('text files', '*.txt'), ('All files', '*.*') )
@@ -86,7 +87,6 @@ class FileMenu(tk.Menu):
             initialdir=os.curdir,
             defaultextension=".txt",
             filetypes=filetypes)
-        self.master.wintitle.set(filename)
 
     def save_now(self):
         pass

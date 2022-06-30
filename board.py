@@ -92,7 +92,7 @@ class Board(tk.Frame):
                     self.field[i].append(tk.StringVar(self,'   '))
                     L = self.tile(i, j)
                     self.labels[i].append(L)
-
+        self.refresh()
 
     def on_leftclick(self, i, j, event):
         val = self.get_value(self.master.spread.sheet[self.generation][i][j].get())

@@ -10,6 +10,8 @@ class Footer(tk.Frame):
         self.L.grid(row=0, column=1, ipadx=4, ipady=5, sticky=tk.W)
         self.S = tk.Scale(self, variable=master.generation, orient=tk.HORIZONTAL, from_=0, to=master.period.get(), showvalue=0)
         self.S.grid(row=0, column=2)
+        self.P = tk.Label(self, textvariable=master.period, width=3)
+        self.P.grid(row=0, column=3)
 
     def periodSet(self):
         try:

@@ -26,6 +26,9 @@ class MenuBar(tk.Menu):
     def load_file(self, filename):
         self.master.load_file(filename)
 
+    def save_file(self, filename = ''):
+        self.master.save_file(filename)
+
     def set_dimensions(self):
         self.dimwin = tk.Toplevel(self.master)
         self.dimwin.title('Dimensions')
@@ -54,6 +57,9 @@ class MenuBar(tk.Menu):
         self.master.update_dimensions()
         self.dimwin.destroy()
 
+    def get_filename(self):
+        return self.master.filename.get()
+
     def quit(self):
         self.master.quit()
 
@@ -63,8 +69,8 @@ class FileMenu(tk.Menu):
         
         self.add_command(label="New", command = master.set_dimensions)
         self.add_command(label="Open", command = self.open_file)
-        self.add_command(label="Save", command = self.save_now)
-        self.add_command(label="Save as...", command = self.save_file)
+        self.add_command(label="Save", command = self.save_file)
+        self.add_command(label="Save as...", command = self.save_file_as)
         self.add_command(label="Close", command = master.donothing)
         self.add_separator()
         self.add_command(label="Exit", command = master.quit)
@@ -73,23 +79,25 @@ class FileMenu(tk.Menu):
         filetypes = ( ('text files', '*.txt'), ('All files', '*.*') )
 
         filename = fd.askopenfilename(
-            title='Open a file',
-            initialdir=os.curdir,
-            filetypes=filetypes)
-        self.master.load_file(filename)
+            title = 'Open a file',
+            initialdir = os.curdir,
+            filetypes = filetypes)
+        if (filename):
+            self.master.load_file(filename)
 
-
-    def save_file(self):
+    def save_file_as(self):
         filetypes = ( ('text files', '*.txt'), ('All files', '*.*') )
 
-        filename = fd.asksaveasfile(
-            initialfile = 'Untitled.txt',
-            initialdir=os.curdir,
-            defaultextension=".txt",
-            filetypes=filetypes)
+        filename = fd.asksaveasfilename(
+            title = 'Save a file',
+            initialfile = self.master.get_filename(),
+            initialdir = os.curdir,
+            defaultextension = ".txt",
+            filetypes = filetypes)
+        self.master.save_file(filename)
 
-    def save_now(self):
-        pass
+    def save_file(self):
+        self.master.save_file()
 
 class EditMenu(tk.Menu):
     def __init__(self, master):

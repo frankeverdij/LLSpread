@@ -14,8 +14,10 @@ class App(tk.Tk):
         self.period = tk.IntVar(master,1)
         self.generation = tk.IntVar(master,0)
         self.generation.trace_add('write', self.update_generation)
-        self.wintitle = tk.StringVar(self,'Untitled')
-        self.wintitle.trace_add('write', self.update_title)
+
+        self.filename = tk.StringVar(self, 'Untitled.txt')
+        self.filename.trace_add('write', self.update_title)
+        self.separator = tk.StringVar(self, ' ')
 
         menubar = MenuBar(self)
         self.board = Board(self)
@@ -37,7 +39,7 @@ class App(tk.Tk):
         self.board.resize()
 
     def update_title(self, var, index, mode):
-        self.title('LLSpread - ' + self.wintitle.get())
+        self.title('LLSpread - ' + self.filename.get())
 
     def update_generation(self, var, index, mode):
         print("Chosen generation is", self.generation.get())
@@ -45,9 +47,17 @@ class App(tk.Tk):
 
     def load_file(self, filename):
         print("Loading", filename)
+        self.filename.set(filename)
         self.spread.load(filename)
         self.footer.periodSet()
         self.board.resize()
+
+    def save_file(self, filename = ''):
+        if len(filename):
+            self.filename.set(filename)
+        filename = self.filename.get()
+        print("Saving", filename)
+        self.spread.save(filename)
 
 if __name__ == "__main__":
     app = App()

@@ -48,10 +48,13 @@ class Spread(tk.Frame):
 
     def save(self, filename):
         with open(filename, 'w') as outfile:
-            for i in range(len(sheet)):
-                print(outfile, '\n')
-                for j in range(len(sheet[0])):
-                    print(outfile, sheet[i][j].join(' '))
+            for i in range(len(self.sheet)):
+                for j in range(len(self.sheet[0])):
+                    line = ''
+                    for k in range(len(self.sheet[0][0])):
+                        line += self.sheet[i][j][k].get() + self.master.separator.get()
+                    outfile.write(line + '\n')
+                outfile.write('\n')
         #unsaved == False
 
     def load(self, filename):
@@ -105,5 +108,4 @@ class Spread(tk.Frame):
             self.master.period.set(period - 1)
             self.master.row.set(row)
             self.master.column.set(column)
-            self.master.wintitle.set(filename)
 

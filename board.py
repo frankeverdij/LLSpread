@@ -26,7 +26,7 @@ class Board(tk.Frame):
         self.j_saved = -1
 
         self.focus_set()
-        self.bind('<Key>', lambda e: self.on_keyhandler(e))
+        self.bind('<Key>', lambda e: self.on_keyhandler_alt(e))
 
         for i,row_ in enumerate(self.field):
             for j,column_ in enumerate(row_):
@@ -173,6 +173,42 @@ class Board(tk.Frame):
                         var = var[0:2] + event.char
                     else:
                         var = var[0] + event.char + ' '
+            self.master.spread.sheet[self.generation][i][j].set(var)
+            self.field[i][j].set(var)
+
+    def on_keyhandler_alt(self, event):
+        if (self.i_saved < 0):
+            return
+
+        i = self.i_saved
+        j = self.j_saved
+        var = self.master.spread.sheet[self.generation][i][j].get()
+        val = self.get_value(var)
+        if (val == 5):
+            if (event.keysym == 'Escape'):
+                self.labels[self.i_saved][self.j_saved].config(relief=tk.RAISED)
+                self.i_saved = -1
+                return
+
+            if (event.keysym == 'BackSpace'):
+                if not var.isspace():
+                    var = var[:-1]
+
+            if (event.char == '-') and (len(var)):
+                if (var[0] == '-'):
+                    var = var[1:]
+                else:
+                    if not var.isspace():
+                        var = event.char + var
+                    else:
+                        return
+
+            if event.char.isalpha():
+                if var.isspace():
+                    var = event.char
+                else:
+                    var = var + event.char
+
             self.master.spread.sheet[self.generation][i][j].set(var)
             self.field[i][j].set(var)
 

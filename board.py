@@ -33,6 +33,13 @@ class Board(tk.Frame):
                 L = self.tile(i, j)
                 self.labels[i].append(L)
 
+    def destroy(self):
+        del self.field
+        for i in range(len(self.labels)):
+            for j in range(len(self.labels[0])):
+                self.labels[i][j].destroy()
+        del self.labels
+
     def tile(self, i, j):
         L = tk.Label(self, textvariable=self.field[i][j], relief=tk.RAISED, fg=fgfield[4], bg=bgfield[4], width=3, height=1)
         L.grid(row=i, column=j, ipadx=4, ipady=5)

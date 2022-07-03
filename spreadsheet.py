@@ -12,7 +12,7 @@ class Spread(tk.Frame):
             raise "Board.new called with zero dimension(s)"
         period = self.master.period.get()
 
-        self.sheet = [ [ [tk.StringVar(self.master, '*') for _ in range(column) ] for _ in range(row) ] for _ in range(period + 1) ]
+        self.sheet = [ [ [tk.StringVar(self, '*') for _ in range(column) ] for _ in range(row) ] for _ in range(period + 1) ]
         for i in range(period + 1):
             for j in range(row):
                 for k in range(column):
@@ -20,14 +20,16 @@ class Spread(tk.Frame):
         print('Create True')
         self.master.unsaved.set(True)
 
+    def destroy(self):
+        del self.sheet
+        self.master.unsaved.set(False)
+
     def push_stack(self, var, index, mode):
         for i in range(len(self.sheet[0])):
             sheetrow=[]
             for j in range(len(self.sheet[0][0])):
                 sheetrow.append( self.sheet[self.master.generation.get()][i][j].get() )
             print(sheetrow)
-        print('Push True')
-        self.master.unsaved.set(True)
 
     def get(self, p):
         return self.sheet[p]
@@ -53,16 +55,19 @@ class Spread(tk.Frame):
         self.master.unsaved.set(True)
 
     def save(self, filename):
-        with open(filename, 'w') as outfile:
-            for i in range(len(self.sheet)):
-                for j in range(len(self.sheet[0])):
-                    line = ''
-                    for k in range(len(self.sheet[0][0])):
-                        line += self.sheet[i][j][k].get() + self.master.separator.get()
-                    outfile.write(line + '\n')
-                outfile.write('\n')
-        print('Save False')
-        self.master.unsaved.set(False)
+        try:
+            with open(filename, 'w') as outfile:
+                for i in range(len(self.sheet)):
+                    for j in range(len(self.sheet[0])):
+                        line = ''
+                        for k in range(len(self.sheet[0][0])):
+                            line += self.sheet[i][j][k].get() + self.master.separator.get()
+                        outfile.write(line + '\n')
+                    outfile.write('\n')
+            print('Save False')
+            self.master.unsaved.set(False)
+        except:
+            print('Spread.save unsuccesful')
 
     def load(self, filename):
         with open(filename, 'r') as infile:
@@ -106,7 +111,7 @@ class Spread(tk.Frame):
                         for line in generation) for generation in grid)), \
                 "Search pattern is not cuboidal"
 
-            self.sheet = [ [ [tk.StringVar(self.master, grid[i][j][k]) for k in range(column) ] for j in range(row) ] for i in range(period) ]
+            self.sheet = [ [ [tk.StringVar(self, grid[i][j][k]) for k in range(column) ] for j in range(row) ] for i in range(period) ]
             for i in range(period):
                 for j in range(row):
                     for k in range(column):

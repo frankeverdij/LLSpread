@@ -22,14 +22,14 @@ class MenuBar(tk.Menu):
         filewin = tk.Toplevel(self.master)
         button = tk.Button(filewin, text="Do nothing button")
         button.pack()
-        
+
     def load_file(self, filename):
         self.master.load_file(filename)
 
     def save_file(self, filename = ''):
         self.master.save_file(filename)
 
-    def set_dimensions(self):
+    def set_dimensions(self, newbool):
         self.dimwin = tk.Toplevel(self.master)
         self.dimwin.title('Dimensions')
         parambox = tk.Frame(self.dimwin)
@@ -42,7 +42,7 @@ class MenuBar(tk.Menu):
         spinrow = tk.Spinbox(parambox, textvariable=self.master.row, from_=1, to=64)
         spinperiod = tk.Spinbox(parambox, textvariable=self.master.period, from_=1, to=16)
 
-        button = tk.Button(parambox, text='Ok', command=self.dimensions_destroy)
+        button = tk.Button(parambox, text='Ok', command = lambda : self.dimensions_destroy(newbool))
 
         labelcolumn.grid(row=0, column=0)
         labelrow.grid(row=1, column=0)
@@ -53,9 +53,15 @@ class MenuBar(tk.Menu):
 
         button.grid(row=3, column=0, columnspan=2)
 
-    def dimensions_destroy(self):
-        self.master.update_dimensions()
+    def dimensions_destroy(self, newbool):
         self.dimwin.destroy()
+        if (newbool or self.master.isnew):
+            self.master.create()
+        else:
+            self.master.update_dimensions()
+
+    def close(self):
+        self.master.destroy()
 
     def get_filename(self):
         return self.master.filename.get()
@@ -67,11 +73,11 @@ class FileMenu(tk.Menu):
     def __init__(self, master):
         super(FileMenu, self).__init__(master)
         
-        self.add_command(label="New", command = master.set_dimensions)
+        self.add_command(label="New", command = lambda : master.set_dimensions(True))
         self.add_command(label="Open", command = self.open_file)
         self.add_command(label="Save", command = self.save_file)
         self.add_command(label="Save as...", command = self.save_file_as)
-        self.add_command(label="Close", command = master.donothing)
+        self.add_command(label="Close", command = master.close)
         self.add_separator()
         self.add_command(label="Exit", command = master.quit)
 
@@ -112,7 +118,7 @@ class EditMenu(tk.Menu):
         self.add_command(label="Delete", command = master.donothing)
         self.add_command(label="Select All", command = master.donothing)
         self.add_separator()
-        self.add_command(label="Set Dimensions", command = master.set_dimensions)
+        self.add_command(label="Set Dimensions", command = lambda : master.set_dimensions(False))
 
 class HelpMenu(tk.Menu):
     def __init__(self, master):

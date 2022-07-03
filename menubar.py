@@ -126,7 +126,7 @@ class HelpMenu(tk.Menu):
         win.title('about')
         box = tk.Frame(win)
         box.pack()
-        label = tk.Label(box, text='TkLifeSearch\n\nFrank Everdij (2021)', padx=10, pady=10)
+        label = tk.Label(box, text='LLSpread\n\nFrank Everdij (2022)', padx=10, pady=10)
         label.pack()
         button = tk.Button(box, text='Ok', command = win.destroy)
         button.pack(side='bottom')

@@ -17,6 +17,8 @@ class Spread(tk.Frame):
             for j in range(row):
                 for k in range(column):
                     self.sheet[i][j][k].trace_add('write', self.push_stack)
+        print('Create True')
+        self.master.unsaved.set(True)
 
     def push_stack(self, var, index, mode):
         for i in range(len(self.sheet[0])):
@@ -24,6 +26,8 @@ class Spread(tk.Frame):
             for j in range(len(self.sheet[0][0])):
                 sheetrow.append( self.sheet[self.master.generation.get()][i][j].get() )
             print(sheetrow)
+        print('Push True')
+        self.master.unsaved.set(True)
 
     def get(self, p):
         return self.sheet[p]
@@ -45,6 +49,8 @@ class Spread(tk.Frame):
                     except:
                         pass
         self.sheet = sheet
+        print('Resize True')
+        self.master.unsaved.set(True)
 
     def save(self, filename):
         with open(filename, 'w') as outfile:
@@ -55,7 +61,8 @@ class Spread(tk.Frame):
                         line += self.sheet[i][j][k].get() + self.master.separator.get()
                     outfile.write(line + '\n')
                 outfile.write('\n')
-        #unsaved == False
+        print('Save False')
+        self.master.unsaved.set(False)
 
     def load(self, filename):
         with open(filename, 'r') as infile:
@@ -108,4 +115,6 @@ class Spread(tk.Frame):
             self.master.period.set(period - 1)
             self.master.row.set(row)
             self.master.column.set(column)
+            print('Load False')
+            self.master.unsaved.set(False)
 

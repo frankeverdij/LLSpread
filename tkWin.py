@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import tkinter as tk
+import os.path
 from menubar import *
 from board import *
 from footer import *
@@ -15,8 +16,10 @@ class App(tk.Tk):
         self.generation = tk.IntVar(master,0)
         self.generation.trace_add('write', self.update_generation)
 
-        self.filename = tk.StringVar(self, 'Untitled.txt')
+        self.filename = tk.StringVar(master, 'Untitled.txt')
         self.filename.trace_add('write', self.update_title)
+        self.unsaved = tk.BooleanVar(master, False)
+        self.unsaved.trace_add('write', self.update_title)
         self.separator = tk.StringVar(self, ' ')
 
         menubar = MenuBar(self)
@@ -28,6 +31,7 @@ class App(tk.Tk):
         self.board.create()
         self.title('LLSpread')
         self.config(menu = menubar)
+        self.minsize(200, 200)
         self.footer.pack(side=tk.BOTTOM, fill=tk.X)
         self.board.pack(side=tk.TOP, fill=tk.BOTH, expand=tk.YES)
 
@@ -39,7 +43,8 @@ class App(tk.Tk):
         self.board.resize()
 
     def update_title(self, var, index, mode):
-        self.title('LLSpread - ' + self.filename.get())
+        unsaved = '*' if self.unsaved.get() else ''
+        self.title('LLSpread - ' + unsaved + os.path.basename(self.filename.get()))
 
     def update_generation(self, var, index, mode):
         print("Chosen generation is", self.generation.get())

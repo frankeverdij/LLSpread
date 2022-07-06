@@ -59,7 +59,7 @@ class Board(tk.Frame):
         for label in self.grid_slaves():
             r = int(label.grid_info()["row"])
             c = int(label.grid_info()["column"])
-            fstate = self.master.spread.sheet[self.generation][r][c].get()
+            fstate = self.master.get_cell(self.generation, r, c)
             val = self.get_value(fstate)
             self.field[r][c].set(self.get_field(fstate))
             label.config(bg=bgfield[val], fg=fgfield[val], relief=tk.RAISED)
@@ -102,7 +102,7 @@ class Board(tk.Frame):
         self.refresh()
 
     def on_leftclick(self, i, j, event):
-        val = self.get_value(self.master.spread.sheet[self.generation][i][j].get())
+        val = self.get_value(self.master.get_cell(self.generation, i, j))
         if (val < 5):
             if val == 4:
                 val = 0
@@ -114,7 +114,7 @@ class Board(tk.Frame):
 
         self.field[i][j].set(' # ' if (val == 2 or val == 3) else '   ')
         event.widget.config(bg=bgfield[val], fg=fgfield[val])
-        self.master.spread.sheet[self.generation][i][j].set(fieldvalue[val])
+        self.master.set_cell(self.generation, i, j, fieldvalue[val])
 
     def widget_raise(self):
         for label in self.grid_slaves():
@@ -123,10 +123,10 @@ class Board(tk.Frame):
     def on_middleclick(self, i, j, event):
         self.labels[self.i_saved][self.j_saved].config(relief=tk.RAISED)
         event.widget.config(bg=bgfield[5], fg=fgfield[5])
-        val = self.get_value(self.master.spread.sheet[self.generation][i][j].get())
+        val = self.get_value(self.master.get_cell(self.generation, i, j))
         if (val < 5):
             self.field[i][j].set('   ')
-            self.master.spread.sheet[self.generation][i][j].set('   ')
+            self.master.set_cell(self.generation, i, j, '   ')
             self.i_saved = i
             self.j_saved = j
             event.widget.config(relief=tk.RIDGE)
@@ -139,13 +139,13 @@ class Board(tk.Frame):
                 self.i_saved = -1
 
     def on_rightclick(self, i, j, event):
-        val = self.get_value(self.master.spread.sheet[self.generation][i][j].get())
+        val = self.get_value(self.master.get_cell(self.generation, i, j))
         if (val == 4):
             self.on_middleclick(i, j, event)
             return
 
         val = 4
-        self.master.spread.sheet[self.generation][i][j].set(fieldvalue[val])
+        self.master.set_cell(self.generation, i, j, fieldvalue[val])
         self.field[i][j].set('   ')
         event.widget.config(bg=bgfield[val], fg=fgfield[val], relief=tk.RAISED)
 
@@ -155,7 +155,7 @@ class Board(tk.Frame):
 
         i = self.i_saved
         j = self.j_saved
-        var = self.master.spread.sheet[self.generation][i][j].get()
+        var = self.master.get_cell(self.generation, i, j)
         val = self.get_value(var)
         if (val == 5):
             if (event.keysym == 'Escape'):
@@ -180,7 +180,7 @@ class Board(tk.Frame):
                         var = var[0:2] + event.char
                     else:
                         var = var[0] + event.char + ' '
-            self.master.spread.sheet[self.generation][i][j].set(var)
+            self.master.set_cell(self.generation, i, j, var)
             self.field[i][j].set(var)
 
     def on_keyhandler_alt(self, event):
@@ -189,7 +189,7 @@ class Board(tk.Frame):
 
         i = self.i_saved
         j = self.j_saved
-        var = self.master.spread.sheet[self.generation][i][j].get()
+        var = self.master.get_cell(self.generation, i, j)
         val = self.get_value(var)
         if (val == 5):
             if (event.keysym == 'Escape'):
@@ -216,6 +216,6 @@ class Board(tk.Frame):
                 else:
                     var = var + event.char
 
-            self.master.spread.sheet[self.generation][i][j].set(var)
+            self.master.set_cell(self.generation, i, j, var)
             self.field[i][j].set(var)
 

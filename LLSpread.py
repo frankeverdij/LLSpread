@@ -85,6 +85,12 @@ class App(tk.Tk):
         self.board.destroy()
         self.footer.periodSet()
 
+    def set_cell(self, p, r, c, cell):
+        self.spread.set(p, r, c, cell)
+
+    def get_cell(self, p, r, c):
+        return self.spread.get(p, r, c)
+
 if __name__ == "__main__":
     app = App()
     app.mainloop()

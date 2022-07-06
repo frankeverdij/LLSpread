@@ -31,14 +31,11 @@ class Spread(tk.Frame):
                 sheetrow.append( self.sheet[self.master.generation.get()][i][j].get() )
             print(sheetrow)
 
-    def get(self, p):
-        return self.sheet[p]
+    def get(self, p, r, c):
+        return self.sheet[p][r][c].get()
 
-    def set(self, sheet, p):
-        if (len(self.sheet[0]) == len(sheet[0])) and (len(self.sheet[0][0]) == len(sheet[0][0])):
-            self.sheet[p] = sheet
-        else:
-            raise('Setting sheet: size mismatch!')
+    def set(self, p, r, c, cell):
+        self.sheet[p][r][c].set(cell)
             
     def resize(self):
         sheet = [ [ [tk.StringVar(self.master, '*') for _ in range(self.master.column.get()) ] for _ in range(self.master.row.get()) ] for _ in range(self.master.period.get() + 1) ]

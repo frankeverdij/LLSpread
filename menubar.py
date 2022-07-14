@@ -26,7 +26,17 @@ class MenuBar(tk.Menu):
     def load_file(self, filename):
         self.master.load_file(filename)
 
-    def save_file(self, filename = ''):
+    def save_file(self, withdialog = False):
+        filename = self.master.filename.get()
+        if (withdialog or (len(filename) == 0)):
+            filetypes = ( ('text files', '*.txt'), ('All files', '*.*') )
+            initialfile = ('Untitled' if len(filename) == 0 else filename)
+            filename = fd.asksaveasfilename(
+                title = 'Save a file',
+                initialfile = initialfile,
+                initialdir = os.curdir,
+                defaultextension = ".txt",
+                filetypes = filetypes)
         self.master.save_file(filename)
 
     def set_dimensions(self, newbool):
@@ -75,8 +85,8 @@ class FileMenu(tk.Menu):
         
         self.add_command(label="New", command = lambda : master.set_dimensions(True))
         self.add_command(label="Open", command = self.open_file)
-        self.add_command(label="Save", command = self.save_file)
-        self.add_command(label="Save as...", command = self.save_file_as)
+        self.add_command(label="Save", command = lambda : master.save_file(False))
+        self.add_command(label="Save as...", command = lambda : master.save_file(True))
         self.add_command(label="Close", command = master.close)
         self.add_separator()
         self.add_command(label="Exit", command = master.quit)

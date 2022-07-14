@@ -16,7 +16,7 @@ class App(tk.Tk):
         self.generation = tk.IntVar(master,0)
         self.generation.trace_add('write', self.update_generation)
 
-        self.filename = tk.StringVar(master, 'Untitled.txt')
+        self.filename = tk.StringVar(master, '')
         self.filename.trace_add('write', self.update_title)
         self.unsaved = tk.BooleanVar(master, False)
         self.unsaved.trace_add('write', self.update_title)
@@ -67,12 +67,11 @@ class App(tk.Tk):
         self.isnew = False
         self.footer.periodSet()
 
-    def save_file(self, filename = ''):
+    def save_file(self, filename):
         if len(filename):
             self.filename.set(filename)
-        filename = self.filename.get()
-        print("Saving", filename)
-        self.spread.save(filename)
+            print("Saving", filename)
+            self.spread.save(filename)
 
     def destroy(self):
         self.isnew = True
@@ -80,7 +79,7 @@ class App(tk.Tk):
         self.column.set(0)
         self.period.set(1)
         self.generation.set(0)
-        self.filename.set('Untitled.txt')
+        self.filename.set('')
         self.spread.destroy()
         self.board.destroy()
         self.footer.periodSet()

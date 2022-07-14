@@ -78,7 +78,7 @@ class MenuBar(tk.Menu):
             self.master.update_dimensions()
 
     def close(self):
-        self.master.destroy()
+        self.master.close()
 
     def quit(self):
         self.master.quit()

@@ -33,7 +33,7 @@ class Board(tk.Frame):
                 L = self.tile(i, j)
                 self.labels[i].append(L)
 
-    def destroy(self):
+    def remove(self):
         del self.field
         for i in range(len(self.labels)):
             for j in range(len(self.labels[0])):
@@ -99,7 +99,6 @@ class Board(tk.Frame):
                     self.field[i].append(tk.StringVar(self,'   '))
                     L = self.tile(i, j)
                     self.labels[i].append(L)
-        self.refresh()
 
     def on_leftclick(self, i, j, event):
         val = self.get_value(self.master.get_cell(self.generation, i, j))

@@ -21,7 +21,7 @@ class Spread(tk.Frame):
         print('Create True')
         self.master.unsaved.set(True)
 
-    def destroy(self):
+    def remove(self):
         del self.sheet
         self.master.unsaved.set(False)
 

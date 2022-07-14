@@ -64,6 +64,7 @@ class App(tk.Tk):
             self.board.create()
         else:
             self.board.resize()
+        self.board.refresh()
         self.footer.periodSet()
 
     def save_file(self, filename):
@@ -72,14 +73,14 @@ class App(tk.Tk):
             print("Saving", filename)
             self.spread.save(filename)
 
-    def destroy(self):
+    def close(self):
         self.row.set(0)
         self.column.set(0)
         self.period.set(1)
         self.generation.set(0)
+        self.spread.remove()
+        self.board.remove()
         self.filename.set('')
-        self.spread.destroy()
-        self.board.destroy()
         self.footer.periodSet()
         self.isempty = True
 

@@ -21,7 +21,7 @@ class App(tk.Tk):
         self.unsaved = tk.BooleanVar(master, False)
         self.unsaved.trace_add('write', self.update_title)
         self.separator = tk.StringVar(self, ' ')
-        self.isnew = True
+        self.isempty = True
 
         menubar = MenuBar(self)
         self.board = Board(self)
@@ -36,10 +36,10 @@ class App(tk.Tk):
 
     def create(self):
         print("New Board")
-        self.isnew = False
         self.spread.create()
         self.board.create()
         self.footer.periodSet()
+        self.isempty = False
 
     def update_dimensions(self):
         print("Chosen dimensions are", self.column.get(), self.row.get())
@@ -60,11 +60,10 @@ class App(tk.Tk):
         print("Loading", filename)
         self.filename.set(filename)
         self.spread.load(filename)
-        if (self.isnew):
+        if (self.isempty):
             self.board.create()
         else:
             self.board.resize()
-        self.isnew = False
         self.footer.periodSet()
 
     def save_file(self, filename):
@@ -74,7 +73,6 @@ class App(tk.Tk):
             self.spread.save(filename)
 
     def destroy(self):
-        self.isnew = True
         self.row.set(0)
         self.column.set(0)
         self.period.set(1)
@@ -83,12 +81,14 @@ class App(tk.Tk):
         self.spread.destroy()
         self.board.destroy()
         self.footer.periodSet()
+        self.isempty = True
 
     def set_cell(self, p, r, c, cell):
         self.spread.set(p, r, c, cell)
 
     def get_cell(self, p, r, c):
         return self.spread.get(p, r, c)
+
 
 if __name__ == "__main__":
     app = App()

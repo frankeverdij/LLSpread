@@ -72,7 +72,7 @@ class MenuBar(tk.Menu):
 
     def dimensions_destroy(self, newbool):
         self.dimwin.destroy()
-        if (newbool or self.master.isnew):
+        if (newbool or self.master.isempty):
             self.master.create()
         else:
             self.master.update_dimensions()

@@ -34,7 +34,7 @@ class MenuBar(tk.Menu):
             self.master.load_file(filename)
 
     def save_file(self, withdialog = False):
-        filename = self.master.filename.get()
+        filename = os.path.basename(self.master.filename.get())
         if (withdialog or (len(filename) == 0)):
             filetypes = ( ('text files', '*.txt'), ('All files', '*.*') )
             initialfile = ('Untitled' if len(filename) == 0 else filename)

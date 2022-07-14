@@ -36,6 +36,8 @@ class Spread(tk.Frame):
 
     def set(self, p, r, c, cell):
         self.sheet[p][r][c].set(cell)
+        print('Set True')
+        self.master.unsaved.set(True)
             
     def resize(self):
         sheet = [ [ [tk.StringVar(self.master, '*') for _ in range(self.master.column.get()) ] for _ in range(self.master.row.get()) ] for _ in range(self.master.period.get() + 1) ]

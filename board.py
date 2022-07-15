@@ -56,6 +56,7 @@ class Board(tk.Frame):
         return cell2field.get(field, field)
 
     def refresh(self):
+        self.check_empty_label()
         self.generation = self.master.generation.get()
         for label in self.grid_slaves():
             r = int(label.grid_info()["row"])

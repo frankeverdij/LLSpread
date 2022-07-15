@@ -50,7 +50,7 @@ class MenuBar(tk.Menu):
                 filetypes = filetypes)
         self.master.save_file(filename)
 
-    def set_dimensions(self, newbool):
+    def set_dimensions(self):
         self.dimwin = tk.Toplevel(self.master)
         self.dimwin.title('Dimensions')
         parambox = tk.Frame(self.dimwin)
@@ -63,7 +63,7 @@ class MenuBar(tk.Menu):
         spinrow = tk.Spinbox(parambox, textvariable=self.master.row, from_=1, to=64)
         spinperiod = tk.Spinbox(parambox, textvariable=self.master.period, from_=1, to=16)
 
-        button = tk.Button(parambox, text='Ok', command = lambda : self.dimensions_destroy(newbool))
+        button = tk.Button(parambox, text='Ok', command = lambda : self.dimensions_destroy())
 
         labelcolumn.grid(row=0, column=0)
         labelrow.grid(row=1, column=0)
@@ -74,7 +74,7 @@ class MenuBar(tk.Menu):
 
         button.grid(row=3, column=0, columnspan=2)
 
-    def dimensions_destroy(self, newbool):
+    def dimensions_destroy(self):
         self.dimwin.destroy()
         if (self.master.isempty):
             self.master.create()
@@ -93,7 +93,7 @@ class FileMenu(tk.Menu):
     def __init__(self, master):
         super(FileMenu, self).__init__(master)
         
-        self.add_command(label="New", command = lambda : master.set_dimensions(True))
+        self.add_command(label="New", command = master.set_dimensions)
         self.add_command(label="Open", command = master.load_file)
         self.add_command(label="Save", command = lambda : master.save_file(False))
         self.add_command(label="Save as...", command = lambda : master.save_file(True))
@@ -114,7 +114,7 @@ class EditMenu(tk.Menu):
         self.add_command(label="Delete", command = master.donothing)
         self.add_command(label="Select All", command = master.donothing)
         self.add_separator()
-        self.add_command(label="Set Dimensions", command = lambda : master.set_dimensions(False))
+        self.add_command(label="Set Dimensions", command = master.set_dimensions)
 
 class HelpMenu(tk.Menu):
     def __init__(self, master):

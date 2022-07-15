@@ -24,6 +24,8 @@ class MenuBar(tk.Menu):
         button.pack()
 
     def load_file(self):
+        if not (self.master.isempty):
+            return
         filetypes = ( ('text files', '*.txt'), ('All files', '*.*') )
 
         filename = fd.askopenfilename(
@@ -34,6 +36,8 @@ class MenuBar(tk.Menu):
             self.master.load_file(filename)
 
     def save_file(self, withdialog = False):
+        if (self.master.isempty):
+            return
         filename = os.path.basename(self.master.filename.get())
         if (withdialog or (len(filename) == 0)):
             filetypes = ( ('text files', '*.txt'), ('All files', '*.*') )
@@ -72,12 +76,14 @@ class MenuBar(tk.Menu):
 
     def dimensions_destroy(self, newbool):
         self.dimwin.destroy()
-        if (newbool or self.master.isempty):
+        if (self.master.isempty):
             self.master.create()
         else:
             self.master.update_dimensions()
 
     def close(self):
+        if (self.master.isempty):
+            return
         self.master.close()
 
     def quit(self):

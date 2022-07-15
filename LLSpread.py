@@ -71,6 +71,7 @@ class App(tk.Tk):
             self.board.resize()
         self.set_generation()
         self.footer.periodSet()
+        self.isempty = False
 
     def save_file(self, filename):
         if len(filename):

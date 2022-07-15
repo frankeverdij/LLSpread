@@ -235,6 +235,7 @@ class Board(tk.Frame):
                 self.labels[i][j].config(bg=bgfield[val], fg=fgfield[val])
 
     def on_focus_out(self, event):
-        self.check_empty_label()
-        self.i_saved = -1
+        if not (self.master.isempty):
+            self.check_empty_label()
+            self.i_saved = -1
 

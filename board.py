@@ -27,6 +27,7 @@ class Board(tk.Frame):
 
         self.focus_set()
         self.bind('<Key>', lambda e: self.on_keyhandler_alt(e))
+        self.bind("<FocusOut>", lambda e: self.on_focus_out(e))
 
         for i,row_ in enumerate(self.field):
             for j,column_ in enumerate(row_):
@@ -120,7 +121,7 @@ class Board(tk.Frame):
             label.config(relief=tk.RAISED)
 
     def on_middleclick(self, i, j, event):
-        self.labels[self.i_saved][self.j_saved].config(relief=tk.RAISED)
+        self.check_empty_label()
         event.widget.config(bg=bgfield[5], fg=fgfield[5])
         val = self.get_value(self.master.get_cell(self.generation, i, j))
         if (val < 5):
@@ -135,6 +136,7 @@ class Board(tk.Frame):
                 self.j_saved = j
                 event.widget.config(relief=tk.RIDGE)
             else:
+                self.check_empty_label()
                 self.i_saved = -1
 
     def on_rightclick(self, i, j, event):
@@ -158,7 +160,7 @@ class Board(tk.Frame):
         val = self.get_value(var)
         if (val == 5):
             if (event.keysym == 'Escape'):
-                self.labels[self.i_saved][self.j_saved].config(relief=tk.RAISED)
+                self.check_empty_label()
                 self.i_saved = -1
                 return
 
@@ -192,7 +194,7 @@ class Board(tk.Frame):
         val = self.get_value(var)
         if (val == 5):
             if (event.keysym == 'Escape'):
-                self.labels[self.i_saved][self.j_saved].config(relief=tk.RAISED)
+                self.check_empty_label()
                 self.i_saved = -1
                 return
 
@@ -217,4 +219,21 @@ class Board(tk.Frame):
 
             self.master.set_cell(self.generation, i, j, var)
             self.field[i][j].set(var)
+
+    def check_empty_label(self):
+        i = self.i_saved
+        j = self.j_saved
+        self.labels[i][j].config(relief=tk.RAISED)
+        var = self.master.get_cell(self.generation, i, j)
+        val = self.get_value(var)
+        if (val == 5):
+            if not (var and var.strip()):
+                val = 4
+                self.master.set_cell(self.generation, i, j, fieldvalue[val])
+                self.field[i][j].set('   ')
+                self.labels[i][j].config(bg=bgfield[val], fg=fgfield[val])
+
+    def on_focus_out(self, event):
+        self.check_empty_label()
+        self.i_saved = -1
 

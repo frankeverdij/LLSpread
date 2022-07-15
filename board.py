@@ -75,7 +75,7 @@ class Board(tk.Frame):
                     self.field[i].pop()
                     self.labels[i][j - 1].destroy()
                     self.labels[i].pop()
-        else:
+        elif (newcolumns > oldcolumns):
             for i in range(oldrows):
                 for j in range(oldcolumns, newcolumns):
                     self.field[i].append(tk.StringVar(self,'   '))
@@ -91,7 +91,7 @@ class Board(tk.Frame):
                     self.labels[i - 1][j].destroy()
                 self.labels.pop()
                 self.field.pop()
-        else:
+        elif (newrows > oldrows):
             for i in range(oldrows, newrows):
                 self.labels.append([])
                 self.field.append([])

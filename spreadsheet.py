@@ -17,7 +17,6 @@ class Spread(tk.Frame):
             for j in range(row):
                 for k in range(column):
                     self.sheet[i][j][k].trace_add('write', self.push_stack)
-        self.update_generation(period)
         print('Create True')
         self.master.unsaved.set(True)
 
@@ -40,10 +39,6 @@ class Spread(tk.Frame):
         print('Set True')
         self.master.unsaved.set(True)
 
-    def update_generation(self, period):
-        oldgen = self.master.generation.get()
-        self.master.generation.set(min(oldgen, period))
-            
     def resize(self):
         sheet = [ [ [tk.StringVar(self.master, '*') for _ in range(self.master.column.get()) ] for _ in range(self.master.row.get()) ] for _ in range(self.master.period.get() + 1) ]
         for i in range(len(sheet)):
@@ -56,7 +51,6 @@ class Spread(tk.Frame):
                         pass
         self.sheet = sheet
         print('Resize True')
-        self.update_generation(len(sheet))
         self.master.unsaved.set(True)
 
     def save(self, filename):
@@ -125,7 +119,6 @@ class Spread(tk.Frame):
             self.master.period.set(period - 1)
             self.master.row.set(row)
             self.master.column.set(column)
-            self.update_generation(period)
             print('Load False')
             self.master.unsaved.set(False)
 

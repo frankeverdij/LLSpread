@@ -46,6 +46,7 @@ class App(tk.Tk):
         print("Chosen period is", self.period.get())
         self.spread.resize()
         self.board.resize()
+        self.set_generation()
         self.footer.periodSet()
 
     def update_title(self, var, index, mode):
@@ -56,6 +57,10 @@ class App(tk.Tk):
         print("Chosen generation is", self.generation.get())
         self.board.refresh()
 
+    def set_generation(self):
+        oldgen = self.generation.get()
+        self.generation.set(min(oldgen, self.period.get()))
+
     def load_file(self, filename):
         print("Loading", filename)
         self.filename.set(filename)
@@ -64,7 +69,7 @@ class App(tk.Tk):
             self.board.create()
         else:
             self.board.resize()
-        self.board.refresh()
+        self.set_generation()
         self.footer.periodSet()
 
     def save_file(self, filename):

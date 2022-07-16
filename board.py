@@ -174,7 +174,7 @@ class Board(tk.Frame):
                     else:
                         return
 
-            if event.char.isalpha():
+            if event.char.isalnum():
                 if (var[1] == ' '):
                     var = var[0] + event.char + ' '
                 else:
@@ -212,7 +212,7 @@ class Board(tk.Frame):
                     else:
                         return
 
-            if event.char.isalpha():
+            if event.char.isalnum():
                 if var.isspace():
                     var = event.char
                 else:

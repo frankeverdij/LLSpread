@@ -5,6 +5,7 @@ import os.path
 from menubar import *
 from board import *
 from footer import *
+from labelbox import *
 from spreadsheet import *
 
 class App(tk.Tk):
@@ -27,12 +28,14 @@ class App(tk.Tk):
         self.board = Board(self)
         self.footer = Footer(self)
         self.spread = Spread(self)
+        self.labelbox = LabelBox(self)
 
         self.title('LLSpread')
         self.config(menu = menubar)
-        self.minsize(200, 200)
+        self.minsize(400, 300)
         self.footer.pack(side=tk.BOTTOM, fill=tk.X)
-        self.board.pack(side=tk.TOP, fill=tk.BOTH, expand=tk.YES)
+        self.board.pack(side=tk.LEFT, fill=tk.BOTH, expand=tk.YES)
+        self.labelbox.pack(side=tk.RIGHT, fill=tk.Y)
 
     def create(self):
         print("New Board")

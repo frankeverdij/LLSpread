@@ -26,7 +26,7 @@ class Board(tk.Frame):
         self.j_saved = -1
 
         self.focus_set()
-        self.bind('<Key>', lambda e: self.on_keyhandler_alt(e))
+        self.bind('<Key>', lambda e: self.on_keyhandler(e))
         self.bind("<FocusOut>", lambda e: self.on_focus_out(e))
 
         for i,row_ in enumerate(self.field):
@@ -165,58 +165,40 @@ class Board(tk.Frame):
                 self.i_saved = -1
                 return
 
-            if (event.char == '-'):
-                if (var[0] == '-'):
-                    var = ' ' + var[1:]
-                else:
+            if (self.master.usefreelabelsize):
+                if (event.keysym == 'BackSpace'):
                     if not var.isspace():
-                        var = event.char + var[1:]
+                        var = var[:-1]
+                elif (event.char == '-') and (len(var)):
+                    if (var[0] == '-'):
+                        var = var[1:]
                     else:
-                        return
-
-            if event.char.isalnum():
-                if (var[1] == ' '):
-                    var = var[0] + event.char + ' '
-                else:
-                    if (var[2] == ' '):
-                        var = var[0:2] + event.char
+                        if not var.isspace():
+                            var = event.char + var
+                        else:
+                            return
+                elif event.char.isalnum():
+                    if var.isspace():
+                        var = event.char
                     else:
+                        var = var + event.char
+            else:
+                if (event.char == '-'):
+                    if (var[0] == '-'):
+                        var = ' ' + var[1:]
+                    else:
+                        if not var.isspace():
+                            var = event.char + var[1:]
+                        else:
+                            return
+                elif event.char.isalnum():
+                    if (var[1] == ' '):
                         var = var[0] + event.char + ' '
-            self.master.set_cell(self.generation, i, j, var)
-            self.field[i][j].set(var)
-
-    def on_keyhandler_alt(self, event):
-        if (self.i_saved < 0):
-            return
-
-        i = self.i_saved
-        j = self.j_saved
-        var = self.master.get_cell(self.generation, i, j)
-        val = self.get_value(var)
-        if (val == 5):
-            if (event.keysym == 'Escape'):
-                self.check_empty_label()
-                self.i_saved = -1
-                return
-
-            if (event.keysym == 'BackSpace'):
-                if not var.isspace():
-                    var = var[:-1]
-
-            if (event.char == '-') and (len(var)):
-                if (var[0] == '-'):
-                    var = var[1:]
-                else:
-                    if not var.isspace():
-                        var = event.char + var
                     else:
-                        return
-
-            if event.char.isalnum():
-                if var.isspace():
-                    var = event.char
-                else:
-                    var = var + event.char
+                        if (var[2] == ' '):
+                            var = var[0:2] + event.char
+                        else:
+                            var = var[0] + event.char + ' '
 
             self.master.set_cell(self.generation, i, j, var)
             self.field[i][j].set(var)

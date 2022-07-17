@@ -23,7 +23,7 @@ class App(tk.Tk):
         self.unsaved.trace_add('write', self.update_title)
         self.separator = tk.StringVar(self, ' ')
         self.isempty = True
-        self.usefreelabelsize = True
+        self.usefixedlabelsize = tk.BooleanVar(master, False)
 
         menubar = MenuBar(self)
         self.board = Board(self)

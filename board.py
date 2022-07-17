@@ -165,24 +165,7 @@ class Board(tk.Frame):
                 self.i_saved = -1
                 return
 
-            if (self.master.usefreelabelsize):
-                if (event.keysym == 'BackSpace'):
-                    if not var.isspace():
-                        var = var[:-1]
-                elif (event.char == '-') and (len(var)):
-                    if (var[0] == '-'):
-                        var = var[1:]
-                    else:
-                        if not var.isspace():
-                            var = event.char + var
-                        else:
-                            return
-                elif event.char.isalnum():
-                    if var.isspace():
-                        var = event.char
-                    else:
-                        var = var + event.char
-            else:
+            if (self.master.usefixedlabelsize.get()):
                 if (event.char == '-'):
                     if (var[0] == '-'):
                         var = ' ' + var[1:]
@@ -199,6 +182,24 @@ class Board(tk.Frame):
                             var = var[0:2] + event.char
                         else:
                             var = var[0] + event.char + ' '
+
+            else:
+                if (event.keysym == 'BackSpace'):
+                    if not var.isspace():
+                        var = var[:-1]
+                elif (event.char == '-') and (len(var)):
+                    if (var[0] == '-'):
+                        var = var[1:]
+                    else:
+                        if not var.isspace():
+                            var = event.char + var
+                        else:
+                            return
+                elif event.char.isalnum():
+                    if var.isspace():
+                        var = event.char
+                    else:
+                        var = var + event.char
 
             self.master.set_cell(self.generation, i, j, var)
             self.field[i][j].set(var)

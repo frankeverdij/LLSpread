@@ -60,7 +60,8 @@ class Spread(tk.Frame):
                     for j in range(len(self.sheet[0])):
                         line = ''
                         for k in range(len(self.sheet[0][0])):
-                            line += self.sheet[i][j][k].get() + self.master.separator.get()
+                            line += self.sheet[i][j][k].get()
+                            line += (self.master.separator.get() if (k< len(self.sheet[0][0])-1) else '')
                         outfile.write(line + '\n')
                     outfile.write('\n')
             print('Save False')

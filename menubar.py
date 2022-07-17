@@ -14,6 +14,9 @@ class MenuBar(tk.Menu):
         
         editmenu = EditMenu(self)
         self.add_cascade(label="Edit", menu = editmenu)
+
+        optionsmenu = OptionsMenu(self)
+        self.add_cascade(label="Options", menu = optionsmenu)
         
         helpmenu = HelpMenu(self)
         self.add_cascade(label="Help", menu = helpmenu)
@@ -101,6 +104,7 @@ class FileMenu(tk.Menu):
         self.add_separator()
         self.add_command(label="Exit", command = master.quit)
 
+
 class EditMenu(tk.Menu):
     def __init__(self, master):
         super(EditMenu, self).__init__(master)
@@ -115,6 +119,30 @@ class EditMenu(tk.Menu):
         self.add_command(label="Select All", command = master.donothing)
         self.add_separator()
         self.add_command(label="Set Dimensions", command = master.set_dimensions)
+
+class OptionsMenu(tk.Menu):
+    def __init__(self, master):
+        super(OptionsMenu, self).__init__(master)
+
+        separatormenu = SeparatorMenu(self)
+        lengthmenu = LengthMenu(self)
+
+        self.add_cascade(label="Output Separator", menu = separatormenu)
+        self.add_cascade(label="Label Length", menu = lengthmenu)
+
+class SeparatorMenu(tk.Menu):
+    def __init__(self, master):
+        super(SeparatorMenu, self).__init__(master)
+
+        self.add_radiobutton(label="space", value=' ', variable=self.master.master.master.separator)
+        self.add_radiobutton(label="comma", value=',', variable=self.master.master.master.separator)
+        self.add_radiobutton(label="tab", value='\t', variable=self.master.master.master.separator)
+
+class LengthMenu(tk.Menu):
+    def __init__(self, master):
+        super(LengthMenu, self).__init__(master)
+
+        self.add_checkbutton(label="Fixed 2 char length", onvalue=True, offvalue=False, variable=self.master.master.master.usefixedlabelsize)
 
 class HelpMenu(tk.Menu):
     def __init__(self, master):

@@ -123,3 +123,15 @@ class Spread(tk.Frame):
             print('Load False')
             self.master.unsaved.set(False)
 
+    def get_labels(self):
+        labeldata = []
+        for i in range(len(self.sheet)):
+            for j in range(len(self.sheet[0])):
+                for k in range(len(self.sheet[0][0])):
+                    var = self.sheet[i][j][k].get()
+                    if (var not in ["0","1","0'","1'","*"]):
+                        varpos = 1 if var[0] == '-' else 0
+                        labelunit = [var[varpos:], varpos, i]
+                        labeldata.append(list(labelunit))
+        labeldata.sort()
+        return labeldata

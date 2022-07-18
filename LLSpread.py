@@ -100,6 +100,9 @@ class App(tk.Tk):
     def get_cell(self, p, r, c):
         return self.spread.get(p, r, c)
 
+    def get_labels(self):
+        if not (self.isempty):
+            return self.spread.get_labels()
 
 if __name__ == "__main__":
     app = App()

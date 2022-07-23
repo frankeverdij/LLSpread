@@ -25,7 +25,6 @@ class Board(tk.Frame):
         self.i_saved = -1
         self.j_saved = -1
 
-        self.focus_set()
         self.bind('<Key>', lambda e: self.on_keyhandler(e))
         self.bind("<FocusOut>", lambda e: self.on_focus_out(e))
 
@@ -122,6 +121,7 @@ class Board(tk.Frame):
             label.config(relief=tk.RAISED)
 
     def on_middleclick(self, i, j, event):
+        self.focus_set()
         self.check_empty_label()
         event.widget.config(bg=bgfield[5], fg=fgfield[5])
         val = self.get_value(self.master.get_cell(self.generation, i, j))

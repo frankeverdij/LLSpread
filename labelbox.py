@@ -13,7 +13,6 @@ class LabelBox(tk.Frame):
         self.G.pack(side=tk.TOP)
         self.L.pack(side=tk.LEFT, fill=tk.Y)
         self.S.pack(side=tk.RIGHT, fill=tk.Y)
-#        self.L.config(state = tk.DISABLED)
 
     def get_labels(self):
         labels = self.master.get_labels()

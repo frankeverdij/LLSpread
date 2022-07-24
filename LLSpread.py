@@ -59,7 +59,8 @@ class App(tk.Tk):
 
     def update_generation(self, var, index, mode):
         print("Chosen generation is", self.generation.get())
-        self.board.refresh()
+        if not self.isempty:
+            self.board.refresh()
 
     def set_generation(self):
         oldgen = self.generation.get()
@@ -73,9 +74,9 @@ class App(tk.Tk):
             self.board.create()
         else:
             self.board.resize()
-        self.set_generation()
         self.footer.periodSet()
         self.isempty = False
+        self.set_generation()
 
     def save_file(self, filename):
         if len(filename):

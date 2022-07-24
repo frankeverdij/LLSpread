@@ -125,13 +125,23 @@ class Spread(tk.Frame):
 
     def get_labels(self):
         labeldata = []
+        labellist = []
+        labelsingle = []
+        labelmulti = []
         for i in range(len(self.sheet)):
             for j in range(len(self.sheet[0])):
                 for k in range(len(self.sheet[0][0])):
                     var = self.sheet[i][j][k].get()
                     if (var not in ["0","1","0'","1'","*"]):
                         varpos = 1 if var[0] == '-' else 0
-                        labelunit = [var[varpos:], varpos, i]
-                        labeldata.append(list(labelunit))
+                        labellist.append(var[varpos:])
+                        labeldata.append(list([var[varpos:], varpos, i]))
         labeldata.sort()
+        multitons = set(label for label in labellist if labellist.count(label) > 1)
+        for i,entry in enumerate(labeldata):
+            if (entry[0] in multitons):
+                labelmulti.append(entry)
+            else:
+                labelsingle.append(entry)
+        labeldata = labelsingle + labelmulti
         return labeldata

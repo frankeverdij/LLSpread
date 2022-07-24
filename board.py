@@ -187,6 +187,8 @@ class Board(tk.Frame):
                 if (event.keysym == 'BackSpace'):
                     if not var.isspace():
                         var = var[:-1]
+                    if (var[0] == '-') and (len(var) == 1):
+                        var = ''
                 elif (event.char == '-') and (len(var)):
                     if (var[0] == '-'):
                         var = var[1:]

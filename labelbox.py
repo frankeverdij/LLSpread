@@ -15,10 +15,11 @@ class LabelBox(tk.Frame):
     def get_labels(self):
         labels = self.master.get_labels()
         self.L.delete(0, tk.END)
-        for index, labelentry in enumerate(labels):
-            color = 'cyan' if (labelentry[1] == 1) else 'beige'
-            if type(labelentry[2]) is not list:
-                color = 'red'
-            labelline = labelentry[0] + ' ' + str(labelentry[2])
-            self.L.insert(tk.END, labelline)
-            self.L.itemconfigure(tk.END, background=color)
+        if (labels):
+            for index, labelentry in enumerate(labels):
+                color = 'cyan' if (labelentry[1] == 1) else 'beige'
+                if type(labelentry[2]) is not list:
+                    color = 'red'
+                labelline = labelentry[0] + ' ' + str(labelentry[2])
+                self.L.insert(tk.END, labelline)
+                self.L.itemconfigure(tk.END, background=color)

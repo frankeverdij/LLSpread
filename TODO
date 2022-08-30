@@ -1,0 +1,16 @@
+- implement undo/redo
+  - keyboard handling of ctrl-z ctrl-u
+  - stack implementation with deque
+  - temporarily disable trace_add for each cell change
+v cell values can be any of 1,2,3 or more chars, needs new inplementation of label code
+v support numeric characters in labels
+v Add Labelbox
+v Add Preferences option in file menu to select space or comma as delimiter
+v Add Preferences in view menu to select 2-char or free label mode
+- After loading a pattern, the labels do not always have three characters, which creates an exception in the board.on_keyboard method.
+v When clicking 'cancel' in the open_file menu, it raises an exception
+v Add period number at the end of the generation slider
+- add confirmation in the footer that a file is loaded or saved 
+- bug: when pressing get labels on an empty canvas it raises an exception
+- labels should be tagged in red when all labels belong to only one frame
+- you can make the labelbox disappear. It should have a minimum width
